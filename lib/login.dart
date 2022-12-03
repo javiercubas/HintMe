@@ -59,13 +59,17 @@ class LoginPage extends StatelessWidget {
       // Login
       width: 100.w,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        const InputForm(
-            text: "Introduce tu correo electrónico",
-            textError: "Introduce un correo electrónico válido"),
+        InputForm(
+          text: "Introduce tu correo electrónico",
+          textError: "Introduce un correo electrónico válido",
+          width: 80.w,
+        ),
         Gap(3.h),
-        const InputForm(
-            text: "Introduce tu contraseña",
-            textError: "Introduce una contraseña válida"),
+        InputForm(
+          text: "Introduce tu contraseña",
+          textError: "Introduce una contraseña válida",
+          width: 80.w,
+        ),
         Gap(3.h),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ButtonAction(

@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class InputForm extends StatelessWidget {
-  const InputForm({super.key, required this.text, required this.textError});
+  const InputForm(
+      {super.key,
+      required this.text,
+      required this.textError,
+      required this.width});
   final String text;
   final String textError;
+  final double width;
   @override
   Widget build(BuildContext context) {
-    return inputForm(text: text, textError: textError);
+    return inputForm(text: text, textError: textError, width: width);
   }
 
-  Container inputForm({required String text, required String textError}) {
+  Container inputForm(
+      {required String text,
+      required String textError,
+      required double width}) {
     return Container(
-        width: 80.w,
+        width: width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
         ),

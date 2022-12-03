@@ -4,6 +4,7 @@ import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/home.dart';
+import 'package:HintMe/phone_verifying.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
@@ -59,24 +60,30 @@ class SignUpPage extends StatelessWidget {
       // Login
       width: 100.w,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        const InputForm(
-            text: "Introduce tu nombre completo",
-            textError: "Introduce un nombre válido"),
+        InputForm(
+          text: "Introduce tu nombre completo",
+          textError: "Introduce un nombre válido",
+          width: 80.w,
+        ),
         Gap(3.h),
-        const InputForm(
-            text: "Introduce tu correo electrónico",
-            textError: "Introduce un correo electrónico válido"),
+        InputForm(
+          text: "Introduce tu correo electrónico",
+          textError: "Introduce un correo electrónico válido",
+          width: 80.w,
+        ),
         Gap(3.h),
-        const InputForm(
-            text: "Introduce tu contraseña",
-            textError: "Introduce una contraseña válida"),
+        InputForm(
+          text: "Introduce tu contraseña",
+          textError: "Introduce una contraseña válida",
+          width: 80.w,
+        ),
         Gap(3.h),
         Center(
           child: ButtonAction(
             text: "Siguiente",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: const HomePage(),
+            action: const PhoneVerifyingPage(),
             width: 80.w,
           ),
         ),
