@@ -1,6 +1,6 @@
 import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:HintMe/pages/SignUp/create_user.dart';
+import 'package:HintMe/screens/SignUp/create_user.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
@@ -131,6 +131,7 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
             backgroundColor: Colors.black,
             action: const CreateUserPage(),
             width: 80.w,
+            fontStyle: FontStyle.normal,
           ),
         ),
       ]),

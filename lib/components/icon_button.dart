@@ -1,5 +1,5 @@
+import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:flutter/material.dart';
-import 'package:HintMe/pages/home.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,29 +8,41 @@ class IconButtonES extends StatelessWidget {
       {super.key,
       required this.action,
       required this.icon,
-      required this.borderRadius});
-  final bool action;
+      required this.borderRadius,
+      required this.backgroundColor,
+      required this.color});
+  final Widget action;
   final IconData icon;
   final double borderRadius;
+  final Color color;
+  final Color backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return iconButton(context,
-        action: action, icon: icon, borderRadius: borderRadius);
+        action: action,
+        icon: icon,
+        borderRadius: borderRadius,
+        color: color,
+        backgroundColor: backgroundColor);
   }
 
   Container iconButton(BuildContext context,
-      {required bool action,
+      {required Widget action,
       required IconData icon,
-      required double borderRadius}) {
+      required double borderRadius,
+      required Color backgroundColor,
+      required Color color}) {
     return Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(borderRadius)),
         child: IconButton(
           iconSize: 5.h,
+          color: color,
           icon: Icon(icon),
           onPressed: () {
-            action = !action;
+            Get.to(() => ProximoTemaPage());
           },
         ));
   }

@@ -9,12 +9,14 @@ class ButtonAction extends StatelessWidget {
       required this.backgroundColor,
       required this.color,
       required this.text,
-      required this.width});
+      required this.width,
+      required this.fontStyle});
   final Widget action;
   final Color backgroundColor;
   final Color color;
   final String text;
   final double width;
+  final FontStyle fontStyle;
   @override
   Widget build(BuildContext context) {
     return buttonAction(context,
@@ -22,7 +24,8 @@ class ButtonAction extends StatelessWidget {
         backgroundColor: backgroundColor,
         color: color,
         text: text,
-        width: width);
+        width: width,
+        fontStyle: fontStyle);
   }
 
   Container buttonAction(BuildContext context,
@@ -30,7 +33,8 @@ class ButtonAction extends StatelessWidget {
       required Color backgroundColor,
       required Color color,
       required String text,
-      required double width}) {
+      required double width,
+      required FontStyle fontStyle}) {
     return Container(
         decoration: const BoxDecoration(
           boxShadow: [
@@ -53,7 +57,10 @@ class ButtonAction extends StatelessWidget {
               text.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 12.sp, color: color),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.sp,
+                  color: color,
+                  fontStyle: fontStyle),
             )));
   }
 }

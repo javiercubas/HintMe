@@ -18,7 +18,7 @@ class IndirectasContainer extends StatelessWidget {
               color: const Color.fromRGBO(255, 255, 255, 1),
               fontFamily: 'Plus Jakarta Sans',
               fontSize: 16.sp)),
-      Gap(4.h),
+      Gap(3.h),
       lock ? indirectasError() : indirectasError()
     ]);
   }

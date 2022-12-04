@@ -3,11 +3,8 @@ import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
-import 'package:HintMe/pages/forgot_password.dart';
-import 'package:HintMe/pages/home.dart';
+import 'package:HintMe/screens/SignUp/phone_verifying.dart';
 import 'package:flutter/material.dart';
-import 'package:HintMe/pages/SignUp/sign_up.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,8 +28,8 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +48,23 @@ class LoginPage extends StatelessWidget {
                   child: Center(
                       child: SingleChildScrollView(
                     child: Column(
-                      children: [const Logo(), Login(context)],
+                      children: [const Logo(), signUp(context)],
                     ),
                   )),
                 ))));
   }
 
-  SizedBox Login(BuildContext context) {
+  SizedBox signUp(BuildContext context) {
     return SizedBox(
       // Login
       width: 100.w,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        InputForm(
+          text: "Introduce tu nombre completo",
+          textError: "Introduce un nombre válido",
+          width: 80.w,
+        ),
+        Gap(3.h),
         InputForm(
           text: "Introduce tu correo electrónico",
           textError: "Introduce un correo electrónico válido",
@@ -74,25 +77,16 @@ class LoginPage extends StatelessWidget {
           width: 80.w,
         ),
         Gap(3.h),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ButtonAction(
-            text: "Registrarse",
-            color: Colors.black,
-            backgroundColor: Colors.white,
-            action: const SignUpPage(),
-            width: 35.w,
-          ),
-          Gap(5.w),
-          ButtonAction(
-            text: "Iniciar Sesión",
+        Center(
+          child: ButtonAction(
+            text: "Siguiente",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: const HomePage(),
-            width: 35.w,
+            action: const PhoneVerifyingPage(),
+            width: 80.w,
+            fontStyle: FontStyle.normal,
           ),
-        ]),
-        Gap(1.h),
-        forgotPassword(context),
+        ),
         Gap(4.h),
         const Separator(),
         Gap(4.h),
@@ -117,20 +111,5 @@ class LoginPage extends StatelessWidget {
         )
       ]),
     );
-  }
-
-  TextButton forgotPassword(context) {
-    return TextButton(
-        onPressed: () {
-          Get.to(() => const ForgotPassword());
-        },
-        child: Text(
-          "¿Has olvidado tu contraseña?",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 11.sp,
-              color: Colors.white),
-        ));
   }
 }

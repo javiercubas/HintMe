@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:HintMe/pages/home.dart';
+import 'package:HintMe/screens/home.dart';
 import 'package:get/get.dart';
 
 class SocialButton extends StatelessWidget {

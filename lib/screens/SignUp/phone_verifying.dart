@@ -1,7 +1,7 @@
 import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:HintMe/pages/SignUp/upload_avatar.dart';
+import 'package:HintMe/screens/SignUp/upload_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -78,6 +78,7 @@ class PhoneVerifyingPage extends StatelessWidget {
             backgroundColor: Colors.black,
             action: const UploadAvatarPage(),
             width: 80.w,
+            fontStyle: FontStyle.normal,
           ),
         ),
       ]),
