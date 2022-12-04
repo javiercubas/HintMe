@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ButtonAction extends StatelessWidget {
@@ -46,10 +47,7 @@ class ButtonAction extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ))),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => action),
-              );
+              Get.to(() => action);
             },
             child: Text(
               text.toUpperCase(),

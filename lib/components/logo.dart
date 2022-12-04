@@ -11,7 +11,7 @@ class Logo extends StatelessWidget {
 
   SizedBox logo() {
     return SizedBox(
-      height: 35.h,
+      height: 30.h,
       width: 100.w,
       child: const Center(
         child: Text(

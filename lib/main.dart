@@ -1,11 +1,9 @@
+import 'package:HintMe/pages/Login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:gap/gap.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import './login.dart';
-import './home.dart';
 
 late var home;
 void main() async {
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
+      return GetMaterialApp(
         title: 'HintMe',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Poppins'),

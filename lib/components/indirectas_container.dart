@@ -3,14 +3,14 @@ import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
 
 class IndirectasContainer extends StatelessWidget {
-  const IndirectasContainer({super.key});
-
+  const IndirectasContainer({super.key, required this.lock});
+  final bool lock;
   @override
   Widget build(BuildContext context) {
-    return indirectasDiv();
+    return indirectasDiv(lock: lock);
   }
 
-  Column indirectasDiv() {
+  Column indirectasDiv({required bool lock}) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Indirectas de hoy',
           textAlign: TextAlign.left,
@@ -19,7 +19,7 @@ class IndirectasContainer extends StatelessWidget {
               fontFamily: 'Plus Jakarta Sans',
               fontSize: 16.sp)),
       Gap(4.h),
-      indirectasError()
+      lock ? indirectasError() : indirectasError()
     ]);
   }
 

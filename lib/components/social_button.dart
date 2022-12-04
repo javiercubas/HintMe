@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:HintMe/home.dart';
+import 'package:HintMe/pages/home.dart';
+import 'package:get/get.dart';
 
 class SocialButton extends StatelessWidget {
   const SocialButton({super.key, required this.action, required this.image});
@@ -20,10 +21,7 @@ class SocialButton extends StatelessWidget {
           onPressed: () {
             final auth = action;
             if (auth != "") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
+              Get.to(() => const HomePage());
             }
           },
         ));

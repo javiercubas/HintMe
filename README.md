@@ -1,6 +1,4 @@
-# hint_me
-
-A new Flutter project.
+# HintMe
 
 ## Getting Started
 

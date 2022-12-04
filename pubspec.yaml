@@ -41,6 +41,8 @@ dependencies:
   sizer: ^2.0.15
   gap: ^2.0.1
   google_sign_in: ^5.4.2
+  animate_do: ^3.0.2
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
