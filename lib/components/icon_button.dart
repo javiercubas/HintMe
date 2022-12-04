@@ -9,7 +9,7 @@ class IconButtonES extends StatelessWidget {
       required this.action,
       required this.icon,
       required this.borderRadius});
-  final Widget action;
+  final bool action;
   final IconData icon;
   final double borderRadius;
   @override
@@ -19,7 +19,7 @@ class IconButtonES extends StatelessWidget {
   }
 
   Container iconButton(BuildContext context,
-      {required Widget action,
+      {required bool action,
       required IconData icon,
       required double borderRadius}) {
     return Container(
@@ -30,10 +30,7 @@ class IconButtonES extends StatelessWidget {
           iconSize: 5.h,
           icon: Icon(icon),
           onPressed: () {
-            final auth = action;
-            if (auth != "") {
-              Get.to(() => const HomePage());
-            }
+            action = !action;
           },
         ));
   }

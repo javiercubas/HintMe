@@ -38,16 +38,7 @@ class HomePage extends StatelessWidget {
                         Gap(5.h),
                         FadeIn(
                             duration: const Duration(seconds: 1),
-                            child: Text(
-                              "¿Quien es el mejor jugador de la historia?",
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 103, 58, 183),
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              textAlign: TextAlign.center,
-                            )),
+                            child: temaDiario(lock)),
                         Gap(5.h),
                         BounceInUp(
                           duration: const Duration(seconds: 1),
@@ -61,18 +52,31 @@ class HomePage extends StatelessWidget {
                 ]))))));
   }
 
+  Text temaDiario(lock) {
+    return Text(
+      lock ? "¿Quien es el mejor jugador de la historia?" : "",
+      style: TextStyle(
+        color: const Color.fromARGB(255, 103, 58, 183),
+        fontSize: 20.sp,
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.italic,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
   Row menu(lock) {
     return Row(
       mainAxisAlignment:
           lock ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [buscador(), lock ? upload() : const Center()],
+      children: [buscador(), lock ? upload(lock) : const Center()],
     );
   }
 
-  IconButtonES upload() {
-    return const IconButtonES(
-      action: SignUpPage(),
+  IconButtonES upload(lock) {
+    return IconButtonES(
+      action: lock,
       icon: Icons.upload_file,
       borderRadius: 10,
     );
