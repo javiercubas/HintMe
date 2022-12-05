@@ -5,6 +5,7 @@ import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/screens/forgot_password.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:HintMe/screens/SignUp/sign_up.dart';
 import 'package:get/get.dart';
@@ -13,26 +14,26 @@ import 'package:gap/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-Future<UserCredential> signInWithGoogle() async {
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+import '../../main.dart';
 
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
-
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithCredential(credential);
+  @override
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +64,22 @@ class LoginPage extends StatelessWidget {
       width: 100.w,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         InputForm(
-          text: "Introduce tu correo electrónico",
-          textError: "Introduce un correo electrónico válido",
-          width: 80.w,
-        ),
+            controller: emailController,
+            text: "Introduce tu correo electrónico",
+            width: 80.w,
+            validator: ((email) =>
+                email != null && EmailValidator.validate(email)
+                    ? null
+                    : "Introduce un correo electrónico válido")),
         Gap(3.h),
         InputForm(
-          text: "Introduce tu contraseña",
-          textError: "Introduce una contraseña válida",
-          width: 80.w,
-        ),
+            controller: passwordController,
+            text: "Introduce tu contraseña",
+            width: 80.w,
+            validator: ((value) =>
+                value != null && value.length >= 8 && value.length <= 18
+                    ? null
+                    : "Introduce una contraseña válida")),
         Gap(3.h),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ButtonAction(
@@ -84,14 +91,34 @@ class LoginPage extends StatelessWidget {
             fontStyle: FontStyle.normal,
           ),
           Gap(5.w),
-          ButtonAction(
-            text: "Iniciar Sesión",
-            color: Colors.white,
-            backgroundColor: Colors.black,
-            action: const HomePage(),
-            width: 35.w,
-            fontStyle: FontStyle.normal,
-          ),
+          Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black, offset: Offset(1, 1), blurRadius: 20)
+                ],
+              ),
+              child: TextButton(
+                  style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(Size(35.w, 7.h)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ))),
+                  onPressed: () {
+                    signIn();
+                  },
+                  child: Text(
+                    "Iniciar sesión".toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                        fontStyle: FontStyle.normal),
+                  ))),
         ]),
         Gap(1.h),
         forgotPassword(context),
@@ -134,5 +161,23 @@ class LoginPage extends StatelessWidget {
               fontSize: 11.sp,
               color: Colors.white),
         ));
+  }
+
+  Future signIn() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ));
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class ButtonAction extends StatelessWidget {
-  const ButtonAction(
+class ButtonFunction extends StatelessWidget {
+  const ButtonFunction(
       {super.key,
       required this.action,
       required this.backgroundColor,
@@ -11,7 +11,7 @@ class ButtonAction extends StatelessWidget {
       required this.width,
       required this.fontStyle});
 
-  final Widget action;
+  final Future<dynamic> action;
   final Color backgroundColor;
   final Color color;
   final String text;
@@ -29,7 +29,7 @@ class ButtonAction extends StatelessWidget {
   }
 
   Container buttonAction(BuildContext context,
-      {required Widget action,
+      {required Future<dynamic> action,
       required Color backgroundColor,
       required Color color,
       required String text,
@@ -51,10 +51,7 @@ class ButtonAction extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ))),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => action),
-              );
+              action;
             },
             child: Text(
               text.toUpperCase(),

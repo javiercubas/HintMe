@@ -4,20 +4,24 @@ class InputForm extends StatelessWidget {
   const InputForm(
       {super.key,
       required this.text,
-      required this.textError,
-      required this.width});
+      required this.width,
+      required this.controller,
+      required this.validator});
   final String text;
-  final String textError;
   final double width;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
-    return inputForm(text: text, textError: textError, width: width);
+    return inputForm(
+        text: text, width: width, controller: controller, validator: validator);
   }
 
   Container inputForm(
       {required String text,
-      required String textError,
-      required double width}) {
+      required double width,
+      required TextEditingController controller,
+      required String? Function(String?)? validator}) {
     return Container(
         width: width,
         decoration: BoxDecoration(
@@ -29,7 +33,8 @@ class InputForm extends StatelessWidget {
                 blurRadius: 20)
           ],
         ),
-        child: TextField(
+        child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromARGB(255, 105, 58, 183),
@@ -40,9 +45,11 @@ class InputForm extends StatelessWidget {
               color: Colors.white,
               fontStyle: FontStyle.italic,
             ),
-            errorText: textError,
             hintText: text,
           ),
+          textInputAction: TextInputAction.done,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: validator,
           style: const TextStyle(
             color: Colors.white,
           ),

@@ -1,6 +1,7 @@
 import 'package:HintMe/components/header.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:HintMe/screens/tema_diario.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
@@ -72,28 +73,11 @@ class ProximoTemaPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Gap(5.h),
-            Container(
-                height: 50.h,
-                width: 90.w,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(imagen),
-                        fit: BoxFit.cover,
-                        opacity: 150),
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
-                child: Center(
-                    child: SizedBox(
-                        width: 80.w,
-                        child: Text(
-                          pregunta,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        )))),
+            ZoomIn(
+                duration: const Duration(seconds: 1),
+                child: Spin(
+                    duration: const Duration(seconds: 1),
+                    child: fotoTema(imagen, pregunta))),
             Gap(5.h),
             ButtonAction(
               action: const TemaDiarioPage(),
@@ -106,5 +90,31 @@ class ProximoTemaPage extends StatelessWidget {
             Gap(5.h),
           ],
         ));
+  }
+
+  Container fotoTema(String imagen, String pregunta) {
+    return Container(
+        height: 50.h,
+        width: 90.w,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(imagen), fit: BoxFit.cover, opacity: 150),
+            color: const Color.fromARGB(255, 0, 0, 0),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Center(
+            child: SizedBox(
+                width: 80.w,
+                child: FadeInUp(
+                    delay: const Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
+                    child: Text(
+                      pregunta,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    )))));
   }
 }

@@ -3,12 +3,27 @@ import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
 
-class CreateUserPage extends StatelessWidget {
+class CreateUserPage extends StatefulWidget {
   const CreateUserPage({super.key});
+
+  @override
+  _CreateUserPageState createState() => _CreateUserPageState();
+}
+
+class _CreateUserPageState extends State<CreateUserPage> {
+  final userController = TextEditingController();
+
+  @override
+  void dispose() {
+    userController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +73,13 @@ class CreateUserPage extends StatelessWidget {
                       "https://pps.whatsapp.net/v/t61.24694-24/181714536_241960988059393_3937636634380900533_n.jpg?ccb=11-4&oh=01_AdSHRxRktYkYnhGVej3oPR3yfKPvhEmPCEsBIEhIVkWDSA&oe=639871D0",
                   border: false),
               InputForm(
-                text: "Nombre de usuario",
-                textError: "Nombre de usuario no disponible",
-                width: 60.w,
-              )
+                  controller: userController,
+                  text: "Nombre de usuario",
+                  width: 60.w,
+                  validator: ((email) =>
+                      email != null && EmailValidator.validate(email)
+                          ? null
+                          : "Nombre de usuario no disponible")),
             ]),
         Column(children: [
           Text(

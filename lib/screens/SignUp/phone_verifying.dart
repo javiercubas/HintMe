@@ -2,13 +2,28 @@ import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/SignUp/upload_avatar.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
-class PhoneVerifyingPage extends StatelessWidget {
+class PhoneVerifyingPage extends StatefulWidget {
   const PhoneVerifyingPage({super.key});
+
+  @override
+  _PhoneVerifyingPageState createState() => _PhoneVerifyingPageState();
+}
+
+class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
+  final phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +81,13 @@ class PhoneVerifyingPage extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   child: const Select()),
               InputForm(
-                text: "Número de teléfono",
-                textError: "Introduce un número de teléfono válido",
-                width: 50.w,
-              )
+                  controller: phoneController,
+                  text: "Número de teléfono",
+                  width: 50.w,
+                  validator: ((email) =>
+                      email != null && EmailValidator.validate(email)
+                          ? null
+                          : "Introduce un número de teléfono válido")),
             ]),
         Center(
           child: ButtonAction(

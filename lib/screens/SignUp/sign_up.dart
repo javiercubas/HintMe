@@ -4,6 +4,7 @@ import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/screens/SignUp/phone_verifying.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
@@ -28,8 +29,26 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,22 +79,31 @@ class SignUpPage extends StatelessWidget {
       width: 100.w,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         InputForm(
-          text: "Introduce tu nombre completo",
-          textError: "Introduce un nombre válido",
-          width: 80.w,
-        ),
+            controller: nameController,
+            text: "Introduce tu nombre completo",
+            width: 80.w,
+            validator: ((email) =>
+                email != null && EmailValidator.validate(email)
+                    ? null
+                    : "Introduce un nombre válido")),
         Gap(3.h),
         InputForm(
-          text: "Introduce tu correo electrónico",
-          textError: "Introduce un correo electrónico válido",
-          width: 80.w,
-        ),
+            controller: emailController,
+            text: "Introduce tu correo electrónico",
+            width: 80.w,
+            validator: ((email) =>
+                email != null && EmailValidator.validate(email)
+                    ? null
+                    : "Introduce un correo electrónico válido")),
         Gap(3.h),
         InputForm(
-          text: "Introduce tu contraseña",
-          textError: "Introduce una contraseña válida",
-          width: 80.w,
-        ),
+            controller: passwordController,
+            text: "Introduce tu contraseña",
+            width: 80.w,
+            validator: ((value) =>
+                value != null && value.length >= 8 && value.length <= 18
+                    ? null
+                    : "Introduce una contraseña válida")),
         Gap(3.h),
         Center(
           child: ButtonAction(

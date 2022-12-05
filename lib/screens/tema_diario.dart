@@ -2,6 +2,7 @@ import 'package:HintMe/components/header.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../components/button_action.dart';
 
@@ -83,30 +84,43 @@ class TemaDiarioPage extends StatelessWidget {
                         )))),
             Gap(5.h),
             Container(
-                width: 90.w,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonAction(
-                        action: const HomePage(),
-                        backgroundColor:
-                            const Color.fromARGB(255, 103, 58, 183),
-                        color: Colors.white,
-                        text: 'Texto',
-                        fontStyle: FontStyle.italic,
-                        width: 40.w,
-                      ),
-                      ButtonAction(
-                        action: const HomePage(),
-                        backgroundColor:
-                            const Color.fromARGB(255, 103, 58, 183),
-                        color: Colors.white,
-                        text: 'Multimedia',
-                        fontStyle: FontStyle.italic,
-                        width: 40.w,
-                      ),
-                    ])),
-            Gap(5.h),
+              width: 90.w,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ButtonAction(
+                      action: const HomePage(),
+                      backgroundColor: const Color.fromARGB(255, 103, 58, 183),
+                      color: Colors.white,
+                      text: 'Texto',
+                      fontStyle: FontStyle.italic,
+                      width: 40.w,
+                    ),
+                    ButtonAction(
+                      action: const HomePage(),
+                      backgroundColor: const Color.fromARGB(255, 103, 58, 183),
+                      color: Colors.white,
+                      text: 'Multimedia',
+                      fontStyle: FontStyle.italic,
+                      width: 40.w,
+                    ),
+                  ]),
+            ),
+            TextButton(
+                onPressed: () {
+                  Get.to(() => const HomePage());
+                },
+                child: Text(
+                  "Omitir",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.sp,
+                      color: const Color.fromARGB(255, 121, 121, 121),
+                      decoration: TextDecoration.underline,
+                      fontStyle: FontStyle.italic),
+                )),
+            Gap(2.h),
           ],
         ));
   }

@@ -1,9 +1,7 @@
-import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/header.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
-import 'package:HintMe/screens/forgot_password.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';

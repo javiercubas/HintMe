@@ -1,12 +1,30 @@
 import 'package:HintMe/components/button_action.dart';
+import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:HintMe/screens/home.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:HintMe/Utils.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
+
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +40,15 @@ class ForgotPassword extends StatelessWidget {
                       Color.fromARGB(255, 31, 3, 98)
                     ])),
                 child: SafeArea(
-                  child: Center(
-                      child: SingleChildScrollView(
+                    child: Center(
+                  child: SingleChildScrollView(
+                      child: Form(
+                    key: formKey,
                     child: Column(
                       children: [const Logo(), forgotPassword(context)],
                     ),
                   )),
-                ))));
+                )))));
   }
 
   SizedBox forgotPassword(BuildContext context) {
@@ -36,6 +56,7 @@ class ForgotPassword extends StatelessWidget {
       // Login
       width: 80.w,
       height: 60.h,
+
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         Text(
@@ -46,21 +67,46 @@ class ForgotPassword extends StatelessWidget {
               fontSize: 12.sp),
         ),
         InputForm(
-          text: "Introduce tu correo electrónico",
-          textError: "Introduce un correo electrónico válido",
-          width: 80.w,
-        ),
+            controller: emailController,
+            text: "Introduce tu correo electrónico",
+            width: 80.w,
+            validator: ((email) =>
+                email != null && EmailValidator.validate(email)
+                    ? null
+                    : "Introduce un correo electrónico válido")),
         Center(
-          child: ButtonAction(
+          child: ButtonFunction(
             text: "Enviar Correo",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: const HomePage(),
+            action: verifyEmail(),
             width: 80.w,
             fontStyle: FontStyle.normal,
           ),
         ),
       ]),
     );
+  }
+
+  Future verifyEmail() async {
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ));
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
+
+      Utils.showSnackBar('Email enviado con éxito.');
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } on FirebaseAuthException catch (e) {
+      Utils.showSnackBar(e.message);
+      Navigator.of(context).pop();
+    }
   }
 }
