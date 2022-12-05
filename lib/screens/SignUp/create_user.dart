@@ -3,7 +3,7 @@ import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/home.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
@@ -76,10 +76,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   controller: userController,
                   text: "Nombre de usuario",
                   width: 60.w,
-                  validator: ((email) =>
-                      email != null && EmailValidator.validate(email)
-                          ? null
-                          : "Nombre de usuario no disponible")),
+                  validator: ((user) => user != null && user.isAlphabetOnly
+                      ? null
+                      : "Nombre de usuario no disponible")),
             ]),
         Column(children: [
           Text(

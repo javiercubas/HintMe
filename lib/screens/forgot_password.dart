@@ -1,8 +1,7 @@
-import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -70,10 +69,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             controller: emailController,
             text: "Introduce tu correo electrónico",
             width: 80.w,
-            validator: ((email) =>
-                email != null && EmailValidator.validate(email)
-                    ? null
-                    : "Introduce un correo electrónico válido")),
+            validator: ((email) => email != null && email.isEmail
+                ? null
+                : "Introduce un correo electrónico válido")),
         Center(
           child: ButtonFunction(
             text: "Enviar Correo",

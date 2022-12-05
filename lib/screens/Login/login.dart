@@ -4,15 +4,13 @@ import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/screens/forgot_password.dart';
-import 'package:HintMe/screens/home.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:HintMe/screens/SignUp/sign_up.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:validators/validators.dart';
 
 import '../../main.dart';
 
@@ -67,19 +65,23 @@ class _LoginPageState extends State<LoginPage> {
             controller: emailController,
             text: "Introduce tu correo electrónico",
             width: 80.w,
-            validator: ((email) =>
-                email != null && EmailValidator.validate(email)
-                    ? null
-                    : "Introduce un correo electrónico válido")),
+            validator: ((email) => email != null && email.isEmail
+                ? null
+                : "Introduce un correo electrónico válido")),
         Gap(3.h),
         InputForm(
             controller: passwordController,
             text: "Introduce tu contraseña",
             width: 80.w,
-            validator: ((value) =>
-                value != null && value.length >= 8 && value.length <= 18
-                    ? null
-                    : "Introduce una contraseña válida")),
+            validator: ((value) => value != null &&
+                    value.length >= 8 &&
+                    value.length <= 18 &&
+                    !isNumeric(value) &&
+                    !isLowercase(value) &&
+                    !isUppercase(value) &&
+                    !isAlpha(value)
+                ? null
+                : "Introduce una contraseña válida")),
         Gap(3.h),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ButtonAction(
