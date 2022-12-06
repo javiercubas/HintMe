@@ -1,5 +1,5 @@
 import 'package:HintMe/components/header.dart';
-import 'package:HintMe/screens/home.dart';
+import 'package:HintMe/components/title.dart';
 import 'package:HintMe/screens/tema_diario.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +17,20 @@ class ProximoTemaPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        centerTitle: true,
+        title: const TitleES(),
+        toolbarHeight: 10.h,
         bottom: PreferredSize(
-            preferredSize: Size(100.w, 17.h),
-            child: Column(children: [
-              const Header(lock: false),
-              Gap(5.h),
-              Text(
-                "Elige la temática para mañana",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.sp,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold),
-              ),
-            ])),
+          preferredSize: Size(100.w, 9.h),
+          child: Text(
+            "Elige la temática para mañana",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.sp,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       backgroundColor: Colors.black,
       body: Center(
@@ -78,7 +78,7 @@ class ProximoTemaPage extends StatelessWidget {
                 child: Spin(
                     duration: const Duration(seconds: 1),
                     child: fotoTema(imagen, pregunta))),
-            Gap(5.h),
+            Gap(7.h),
             ButtonAction(
               action: const TemaDiarioPage(),
               backgroundColor: const Color.fromARGB(255, 103, 58, 183),
@@ -87,7 +87,7 @@ class ProximoTemaPage extends StatelessWidget {
               fontStyle: FontStyle.italic,
               width: 50.w,
             ),
-            Gap(5.h),
+            Gap(7.h),
           ],
         ));
   }

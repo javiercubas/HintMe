@@ -42,7 +42,7 @@ class Avatar extends StatelessWidget {
             ],
             borderRadius: BorderRadius.all(Radius.circular(100.w)),
             border: Border.all(
-              color: Color.fromRGBO(103, 58, 183, 1),
+              color: const Color.fromRGBO(103, 58, 183, 1),
               width: border ? 2 : 0,
             ),
           ),

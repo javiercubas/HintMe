@@ -45,6 +45,7 @@ dependencies:
   get: ^4.6.5
   validators: ^3.0.0
   fl_country_code_picker: ^0.0.4
+  cloud_firestore: ^4.1.0
 
 dev_dependencies:
   flutter_test:

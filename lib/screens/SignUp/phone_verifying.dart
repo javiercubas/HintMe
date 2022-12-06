@@ -103,6 +103,7 @@ class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
               ),
               InputForm(
                   controller: phoneController,
+                  password: false,
                   text: "Número de teléfono",
                   width: 50.w,
                   validator: ((tel) => tel != null && tel.isPhoneNumber

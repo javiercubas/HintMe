@@ -67,13 +67,14 @@ class _CreateUserPageState extends State<CreateUserPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Avatar(
-                  action: Text(""),
+                  action: const Text(""),
                   size: 8.h,
                   image:
                       "https://pps.whatsapp.net/v/t61.24694-24/181714536_241960988059393_3937636634380900533_n.jpg?ccb=11-4&oh=01_AdSHRxRktYkYnhGVej3oPR3yfKPvhEmPCEsBIEhIVkWDSA&oe=639871D0",
                   border: false),
               InputForm(
                   controller: userController,
+                  password: false,
                   text: "Nombre de usuario",
                   width: 60.w,
                   validator: ((user) => user != null && user.isAlphabetOnly

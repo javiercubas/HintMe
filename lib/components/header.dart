@@ -1,3 +1,4 @@
+import 'package:HintMe/components/title.dart';
 import 'package:HintMe/screens/settings.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -59,15 +60,7 @@ class Header extends StatelessWidget {
                     size: 5.h)
               ],
             )),
-        Text(
-          "HINTME",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontSize: 21.sp,
-              color: Colors.white),
-        ),
+        const TitleES(),
       ]),
     );
   }

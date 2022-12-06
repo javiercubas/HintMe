@@ -66,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           InputForm(
               controller: emailController,
+              password: false,
               text: "Introduce tu correo electrónico",
               width: 80.w,
               validator: ((email) => email != null && email.isEmail
@@ -74,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
           Gap(3.h),
           InputForm(
               controller: passwordController,
+              password: true,
               text: "Introduce tu contraseña",
               width: 80.w,
               validator: ((value) => value != null &&

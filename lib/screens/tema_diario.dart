@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../components/button_action.dart';
+import '../components/title.dart';
 
 class TemaDiarioPage extends StatelessWidget {
   const TemaDiarioPage({super.key});
@@ -17,20 +18,20 @@ class TemaDiarioPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        centerTitle: true,
+        title: const TitleES(),
+        toolbarHeight: 10.h,
         bottom: PreferredSize(
-            preferredSize: Size(100.w, 17.h),
-            child: Column(children: [
-              const Header(lock: false),
-              Gap(5.h),
-              Text(
-                "El tema diario es...",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.sp,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold),
-              ),
-            ])),
+          preferredSize: Size(100.w, 9.h),
+          child: Text(
+            "Elige la temática para mañana",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.sp,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       backgroundColor: Colors.black,
       body: Center(

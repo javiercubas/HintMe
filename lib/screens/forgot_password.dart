@@ -68,6 +68,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
         InputForm(
             controller: emailController,
+            password: false,
             text: "Introduce tu correo electrónico",
             width: 80.w,
             validator: ((email) => email != null && email.isEmail

@@ -6,22 +6,29 @@ class InputForm extends StatelessWidget {
       required this.text,
       required this.width,
       required this.controller,
-      required this.validator});
+      required this.validator,
+      required this.password});
   final String text;
   final double width;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final bool password;
   @override
   Widget build(BuildContext context) {
     return inputForm(
-        text: text, width: width, controller: controller, validator: validator);
+        text: text,
+        width: width,
+        controller: controller,
+        validator: validator,
+        password: password);
   }
 
   Container inputForm(
       {required String text,
       required double width,
       required TextEditingController controller,
-      required String? Function(String?)? validator}) {
+      required String? Function(String?)? validator,
+      required bool password}) {
     return Container(
         width: width,
         decoration: BoxDecoration(
@@ -35,6 +42,7 @@ class InputForm extends StatelessWidget {
         ),
         child: TextFormField(
           controller: controller,
+          obscureText: password ? true : false,
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromARGB(255, 105, 58, 183),
