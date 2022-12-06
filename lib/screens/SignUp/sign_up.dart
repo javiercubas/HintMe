@@ -83,9 +83,10 @@ class _SignUpPageState extends State<SignUpPage> {
             controller: nameController,
             text: "Introduce tu nombre completo",
             width: 80.w,
-            validator: ((name) => name != null && name.isAlphabetOnly
-                ? null
-                : "Introduce un nombre válido")),
+            validator: ((name) =>
+                name != null && name.isAlphabetOnly && name.length >= 3
+                    ? null
+                    : "Introduce un nombre válido")),
         Gap(3.h),
         InputForm(
             controller: emailController,

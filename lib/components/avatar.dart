@@ -15,14 +15,17 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return avatar(action, size, image, border);
+    return avatar(context, action, size, image, border);
   }
 
   GestureDetector avatar(
-      Widget action, double size, String image, bool border) {
+      context, Widget action, double size, String image, bool border) {
     return GestureDetector(
         onTap: () {
-          action;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => action),
+          );
         },
         child: Container(
           width: size,

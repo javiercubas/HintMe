@@ -5,8 +5,7 @@ import 'package:HintMe/screens/SignUp/upload_avatar.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 
 class PhoneVerifyingPage extends StatefulWidget {
   const PhoneVerifyingPage({super.key});
@@ -17,6 +16,7 @@ class PhoneVerifyingPage extends StatefulWidget {
 
 class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
   final phoneController = TextEditingController();
+  final countryPicker = const FlCountryCodePicker();
 
   @override
   void dispose() {
@@ -66,7 +66,13 @@ class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              GestureDetector(
+                onTap: () async {
+                  final code = await countryPicker.showPicker(context: context);
+                  if (code != null) print(code);
+                },
+                child: Container(
+                  height: 7.25.h,
                   decoration: const BoxDecoration(
                     color: Color.fromRGBO(103, 58, 183, 1),
                     boxShadow: [
@@ -79,7 +85,22 @@ class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
                   ),
                   width: 25.w,
                   padding: const EdgeInsets.all(6),
-                  child: const Select()),
+                  child: Center(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                        Text(
+                          "Prefijo",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 14.sp),
+                        ),
+                        const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                        )
+                      ])),
+                ),
+              ),
               InputForm(
                   controller: phoneController,
                   text: "Número de teléfono",
@@ -99,47 +120,6 @@ class _PhoneVerifyingPageState extends State<PhoneVerifyingPage> {
           ),
         ),
       ]),
-    );
-  }
-}
-
-class Select extends StatefulWidget {
-  const Select({super.key});
-
-  @override
-  State<Select> createState() => _SelectState();
-}
-
-class _SelectState extends State<Select> {
-  String dropdownValue = list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(
-        Icons.arrow_drop_down,
-        color: Colors.white,
-      ),
-      elevation: 16,
-      isExpanded: true,
-      style: const TextStyle(color: Colors.white),
-      underline: Container(
-        height: 0,
-      ),
-      dropdownColor: const Color.fromARGB(255, 105, 58, 183),
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }

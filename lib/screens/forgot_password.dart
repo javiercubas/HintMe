@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:HintMe/Utils.dart';
+import 'package:HintMe/main.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -77,7 +78,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             text: "Enviar Correo",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: verifyEmail(),
+            action: () => verifyEmail(),
             width: 80.w,
             fontStyle: FontStyle.normal,
           ),
@@ -101,10 +102,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           .sendPasswordResetEmail(email: emailController.text.trim());
 
       Utils.showSnackBar('Email enviado con éxito.');
-      Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(e.message);
-      Navigator.of(context).pop();
     }
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

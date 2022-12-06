@@ -42,7 +42,7 @@ class IconButtonES extends StatelessWidget {
           color: color,
           icon: Icon(icon),
           onPressed: () {
-            Get.to(() => ProximoTemaPage());
+            Get.to(() => const ProximoTemaPage());
           },
         ));
   }

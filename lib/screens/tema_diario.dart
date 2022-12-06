@@ -1,5 +1,6 @@
 import 'package:HintMe/components/header.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -60,68 +61,85 @@ class TemaDiarioPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Gap(5.h),
-            Container(
-                height: 50.h,
-                width: 90.w,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(imagen),
-                        fit: BoxFit.cover,
-                        opacity: 150),
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
-                child: Center(
-                    child: SizedBox(
-                        width: 80.w,
-                        child: Text(
-                          pregunta,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        )))),
+            ZoomIn(
+                duration: const Duration(seconds: 1),
+                child: Spin(
+                    duration: const Duration(seconds: 1),
+                    child: fotoTema(imagen, pregunta))),
             Gap(5.h),
-            Container(
+            SizedBox(
               width: 90.w,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ButtonAction(
-                      action: const HomePage(),
-                      backgroundColor: const Color.fromARGB(255, 103, 58, 183),
-                      color: Colors.white,
-                      text: 'Texto',
-                      fontStyle: FontStyle.italic,
-                      width: 40.w,
-                    ),
-                    ButtonAction(
-                      action: const HomePage(),
-                      backgroundColor: const Color.fromARGB(255, 103, 58, 183),
-                      color: Colors.white,
-                      text: 'Multimedia',
-                      fontStyle: FontStyle.italic,
-                      width: 40.w,
-                    ),
+                    BounceInLeft(
+                        duration: const Duration(seconds: 1),
+                        child: ButtonAction(
+                          action: const HomePage(),
+                          backgroundColor:
+                              const Color.fromARGB(255, 103, 58, 183),
+                          color: Colors.white,
+                          text: 'Texto',
+                          fontStyle: FontStyle.italic,
+                          width: 40.w,
+                        )),
+                    BounceInRight(
+                        duration: const Duration(seconds: 1),
+                        child: ButtonAction(
+                          action: const HomePage(),
+                          backgroundColor:
+                              const Color.fromARGB(255, 103, 58, 183),
+                          color: Colors.white,
+                          text: 'Multimedia',
+                          fontStyle: FontStyle.italic,
+                          width: 40.w,
+                        )),
                   ]),
             ),
-            TextButton(
-                onPressed: () {
-                  Get.to(() => const HomePage());
-                },
-                child: Text(
-                  "Omitir",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
-                      color: const Color.fromARGB(255, 121, 121, 121),
-                      decoration: TextDecoration.underline,
-                      fontStyle: FontStyle.italic),
-                )),
+            FadeIn(
+                duration: const Duration(seconds: 1),
+                child: TextButton(
+                    onPressed: () {
+                      Get.to(() => const HomePage());
+                    },
+                    child: Text(
+                      "Omitir",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.sp,
+                          color: const Color.fromARGB(255, 121, 121, 121),
+                          decoration: TextDecoration.underline,
+                          fontStyle: FontStyle.italic),
+                    ))),
             Gap(2.h),
           ],
         ));
+  }
+
+  Container fotoTema(String imagen, String pregunta) {
+    return Container(
+        height: 50.h,
+        width: 90.w,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(imagen), fit: BoxFit.cover, opacity: 150),
+            color: const Color.fromARGB(255, 0, 0, 0),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Center(
+            child: SizedBox(
+                width: 80.w,
+                child: FadeInUp(
+                    delay: const Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
+                    child: Text(
+                      pregunta,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    )))));
   }
 }

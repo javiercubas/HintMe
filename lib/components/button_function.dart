@@ -1,3 +1,5 @@
+import 'package:HintMe/screens/Login/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -11,7 +13,7 @@ class ButtonFunction extends StatelessWidget {
       required this.width,
       required this.fontStyle});
 
-  final Future<dynamic> action;
+  final Future<void> Function() action;
   final Color backgroundColor;
   final Color color;
   final String text;
@@ -29,7 +31,7 @@ class ButtonFunction extends StatelessWidget {
   }
 
   Container buttonAction(BuildContext context,
-      {required Future<dynamic> action,
+      {required Future<void> Function() action,
       required Color backgroundColor,
       required Color color,
       required String text,
@@ -50,9 +52,7 @@ class ButtonFunction extends StatelessWidget {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ))),
-            onPressed: () {
-              action;
-            },
+            onPressed: action,
             child: Text(
               text.toUpperCase(),
               textAlign: TextAlign.center,
@@ -62,5 +62,13 @@ class ButtonFunction extends StatelessWidget {
                   color: color,
                   fontStyle: fontStyle),
             )));
+  }
+
+  Future signOut(context) async {
+    await FirebaseAuth.instance.signOut().then((value) =>
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const LoginPage())));
   }
 }

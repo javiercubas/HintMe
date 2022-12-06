@@ -1,12 +1,16 @@
+import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/header.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:animate_do/animate_do.dart';
+
+import '../components/button_function.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,6 +19,47 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool lock = true;
     return Scaffold(
+      appBar: AppBar(
+          title: Text(
+            "HINTME",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontSize: 21.sp,
+                color: Colors.white),
+          ),
+          elevation: 0,
+          toolbarHeight: 10.h,
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 39, 36, 36),
+          leading: Builder(builder: (context) {
+            return GestureDetector(
+                onTap: () => Scaffold.of(context).openEndDrawer(),
+                child: Container(
+                  width: 1.h,
+                  height: 1.h,
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                            "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg")),
+                    color: const Color.fromRGBO(103, 58, 183, 1),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Color.fromRGBO(103, 58, 183, 1),
+                          offset: Offset(4, 4),
+                          blurRadius: 20)
+                    ],
+                    borderRadius: BorderRadius.all(Radius.circular(100.w)),
+                    border: Border.all(
+                      color: const Color.fromRGBO(103, 58, 183, 1),
+                      width: 2,
+                    ),
+                  ),
+                ));
+          })),
+      endDrawer: const NavigationDrawer(),
       body: Center(
           child: SafeArea(
               child: Center(
@@ -191,4 +236,65 @@ class HomePage extends StatelessWidget {
   Search buscador() {
     return Search(text: "Buscar Usuario", textError: "", width: 70.w);
   }
+}
+
+class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) => Drawer(
+          child: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg"),
+                fit: BoxFit.cover,
+                opacity: 1000),
+            color: Color.fromARGB(255, 39, 36, 36)),
+        child: SafeArea(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(children: [
+                  Text(
+                    "HINTME",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 21.sp,
+                        color: Colors.white),
+                  ),
+                  Gap(2.h),
+                  Avatar(
+                      action: const HomePage(),
+                      border: true,
+                      image:
+                          "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg",
+                      size: 10.h),
+                  Gap(2.h),
+                  Text(
+                    "JAVIER CUBAS",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
+                        color: Colors.white),
+                  ),
+                  Text(
+                    "@__Javi._01",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                  ),
+                ]),
+                ButtonFunction(
+                    action: () => FirebaseAuth.instance.signOut(),
+                    backgroundColor: const Color.fromARGB(255, 49, 45, 45),
+                    color: Colors.white,
+                    text: "Cerrar Sesión",
+                    width: 66.w,
+                    fontStyle: FontStyle.normal)
+              ]),
+        ),
+      ));
 }
