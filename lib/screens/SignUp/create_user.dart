@@ -1,8 +1,12 @@
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/button_action.dart';
+import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
+import 'package:HintMe/main.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -77,9 +81,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   password: false,
                   text: "Nombre de usuario",
                   width: 60.w,
-                  validator: ((user) => user != null && user.isAlphabetOnly
-                      ? null
-                      : "Nombre de usuario no disponible")),
+                  validator: ((user) =>
+                      user != null ? null : "Nombre de usuario no disponible")),
             ]),
         Column(children: [
           Text(
@@ -90,16 +93,33 @@ class _CreateUserPageState extends State<CreateUserPage> {
                 fontSize: 12.sp),
           ),
           Gap(3.h),
-          ButtonAction(
+          ButtonFunction(
             text: "Crear Cuenta",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: const HomePage(),
+            action: () => updateUser(),
             width: 80.w,
             fontStyle: FontStyle.normal,
           ),
         ]),
       ]),
     );
+  }
+
+  Future updateUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    final json = {
+      'user': userController.text.trim(),
+    };
+
+    await docUser
+        .set(json, SetOptions(merge: true))
+        .then((value) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            ));
   }
 }

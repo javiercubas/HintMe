@@ -44,7 +44,7 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
             boxShadow: [
               BoxShadow(
                   color: Color.fromRGBO(103, 58, 183, 1),
-                  offset: Offset(4, 4),
+                  offset: Offset(0, 0),
                   blurRadius: 100)
             ]),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -103,7 +103,7 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
                   boxShadow: const [
                     BoxShadow(
                         color: Color.fromRGBO(31, 3, 98, 1),
-                        offset: Offset(4, 4),
+                        offset: Offset(0, 0),
                         blurRadius: 20)
                   ]),
               duration: const Duration(milliseconds: 1500),

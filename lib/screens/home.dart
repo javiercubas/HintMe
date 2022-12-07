@@ -4,13 +4,15 @@ import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:HintMe/components/button_function.dart';
 
-import '../components/button_function.dart';
+CollectionReference users = FirebaseFirestore.instance.collection('users');
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -48,7 +50,7 @@ class HomePage extends StatelessWidget {
                     boxShadow: const [
                       BoxShadow(
                           color: Color.fromRGBO(103, 58, 183, 1),
-                          offset: Offset(4, 4),
+                          offset: Offset(0, 0),
                           blurRadius: 20)
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(100.w)),
@@ -273,18 +275,61 @@ class NavigationDrawer extends StatelessWidget {
                           "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg",
                       size: 10.h),
                   Gap(2.h),
-                  Text(
-                    "JAVIER CUBAS",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
-                        color: Colors.white),
+                  FutureBuilder<DocumentSnapshot>(
+                    future:
+                        users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Something went wrong");
+                      }
+
+                      if (snapshot.hasData && !snapshot.data!.exists) {
+                        return Text("Document does not exist");
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        Map<String, dynamic> data =
+                            snapshot.data!.data() as Map<String, dynamic>;
+                        return Text(
+                          data['name'].toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
+                              color: Colors.white),
+                        );
+                      }
+
+                      return Text("loading");
+                    },
                   ),
-                  Text(
-                    "@__Javi._01",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                  FutureBuilder<DocumentSnapshot>(
+                    future:
+                        users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Something went wrong");
+                      }
+
+                      if (snapshot.hasData && !snapshot.data!.exists) {
+                        return Text("Document does not exist");
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        Map<String, dynamic> data =
+                            snapshot.data!.data() as Map<String, dynamic>;
+                        return Text(
+                          "@${data['user']}".toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 12.sp, color: Colors.white),
+                        );
+                      }
+
+                      return Text("loading");
+                    },
                   ),
                 ]),
                 ButtonFunction(

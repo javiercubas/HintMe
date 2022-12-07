@@ -6,7 +6,9 @@ import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/main.dart';
-import 'package:HintMe/screens/SignUp/phone_verifying.dart';
+import 'package:HintMe/screens/SignUp/phone_verifying_disable.dart';
+import 'package:HintMe/screens/SignUp/upload_avatar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -167,9 +169,11 @@ class _SignUpPageState extends State<SignUpPage> {
               child: CircularProgressIndicator(),
             ));
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim())
+          .then((firebaseUser) => createUser(firebaseUser.user?.uid));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Utils.showSnackBar(
@@ -180,6 +184,17 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
 
-    navigatorKey.currentState!.pop();
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  Future createUser(uid) async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc(uid);
+
+    final json = {
+      'name': nameController.text.trim(),
+      'email': emailController.text.trim(),
+    };
+
+    await docUser.set(json);
   }
 }

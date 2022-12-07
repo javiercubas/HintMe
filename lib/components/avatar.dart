@@ -37,8 +37,8 @@ class Avatar extends StatelessWidget {
             boxShadow: const [
               BoxShadow(
                   color: Color.fromRGBO(103, 58, 183, 1),
-                  offset: Offset(4, 4),
-                  blurRadius: 20)
+                  offset: Offset(0, 0),
+                  blurRadius: 10)
             ],
             borderRadius: BorderRadius.all(Radius.circular(100.w)),
             border: Border.all(

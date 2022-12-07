@@ -38,7 +38,7 @@ class ButtonAction extends StatelessWidget {
     return Container(
         decoration: const BoxDecoration(
           boxShadow: [
-            BoxShadow(color: Colors.black, offset: Offset(1, 1), blurRadius: 20)
+            BoxShadow(color: Colors.black, offset: Offset(0, 0), blurRadius: 20)
           ],
         ),
         child: TextButton(

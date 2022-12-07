@@ -27,43 +27,43 @@ class SettingsPage extends StatelessWidget {
 
   Container accountSettings() {
     return Container(
-      width: 90.w,
-      height: 10.h,
+      width: 80.w,
+      height: 50.h,
       decoration: const BoxDecoration(
           color: Color.fromARGB(255, 49, 45, 45),
           borderRadius: BorderRadius.all(Radius.circular(12))),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Gap(5.w),
-        Avatar(
-            action: const HomePage(),
-            border: true,
-            image:
-                "https://pps.whatsapp.net/v/t61.24694-24/181714536_241960988059393_3937636634380900533_n.jpg?ccb=11-4&oh=01_AdSorvbCtgNjaKjF3CsjNUSrf7iwBt-eV8OCAyJ85GT-qQ&oe=639B4D10",
-            size: 6.h),
-        Gap(5.w),
-        SizedBox(
-          height: 6.h,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 13.h,
+              width: 100.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Avatar(
+                      action: const HomePage(),
+                      border: true,
+                      image:
+                          "https://pps.whatsapp.net/v/t61.24694-24/181714536_241960988059393_3937636634380900533_n.jpg?ccb=11-4&oh=01_AdSorvbCtgNjaKjF3CsjNUSrf7iwBt-eV8OCAyJ85GT-qQ&oe=639B4D10",
+                      size: 9.h),
+                  Text(
+                    "Edit picture",
+                    style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                  )
+                ],
+              ),
+            ),
+            Row(
               children: [
                 Text(
-                  "JAVIER CUBAS",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13.sp),
+                  "Name",
+                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
                 ),
-                Text(
-                  "@__javi._01",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13.sp),
-                )
-              ]),
-        )
-      ]),
+              ],
+            )
+          ]),
     );
   }
 

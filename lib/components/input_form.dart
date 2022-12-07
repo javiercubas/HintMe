@@ -36,7 +36,7 @@ class InputForm extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
                 color: Color.fromRGBO(31, 3, 98, 1),
-                offset: Offset(4, 4),
+                offset: Offset(0, 0),
                 blurRadius: 20)
           ],
         ),
