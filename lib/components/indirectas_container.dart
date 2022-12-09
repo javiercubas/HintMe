@@ -29,12 +29,7 @@ class IndirectasContainer extends StatelessWidget {
       height: 18.h,
       padding: const EdgeInsets.all(20.0),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-          bottomLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
         color: Color.fromRGBO(49, 45, 45, 1),
       ),
       child: const Center(

@@ -4,6 +4,7 @@ import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
+import 'package:HintMe/screens/search_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -245,7 +246,7 @@ class HomePage extends StatelessWidget {
   }
 
   Search buscador() {
-    return Search(text: "Buscar Usuario", textError: "", width: 70.w);
+    return Search(text: "Buscar Usuario", action: SearchPage(), width: 70.w);
   }
 }
 
