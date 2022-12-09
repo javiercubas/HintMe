@@ -11,19 +11,15 @@ class Logo extends StatelessWidget {
 
   SizedBox logo() {
     return SizedBox(
-      height: 30.h,
-      width: 100.w,
-      child: const Center(
-        child: Text(
-          "HINTME",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontSize: 40,
-              color: Colors.white),
-        ),
-      ),
-    );
+        height: 30.h,
+        width: 100.w,
+        child: Center(
+          child: Image(
+            image: AssetImage("assets/HintMeLogoWhite.png"),
+            fit: BoxFit.contain,
+            height: 25.h,
+            width: 25.h,
+          ),
+        ));
   }
 }

@@ -165,9 +165,18 @@ class _SignUpPageState extends State<SignUpPage> {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+        builder: (context) => Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                  Color.fromARGB(255, 103, 58, 183),
+                  Color.fromARGB(255, 31, 3, 98)
+                ])),
+            child: const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            )));
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(

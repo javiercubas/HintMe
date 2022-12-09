@@ -35,32 +35,41 @@ class HomePage extends StatelessWidget {
           toolbarHeight: 10.h,
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 39, 36, 36),
-          leading: Builder(builder: (context) {
-            return GestureDetector(
-                onTap: () => Scaffold.of(context).openEndDrawer(),
-                child: Container(
-                  width: 1.h,
-                  height: 1.h,
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg")),
-                    color: const Color.fromRGBO(103, 58, 183, 1),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Color.fromRGBO(103, 58, 183, 1),
-                          offset: Offset(0, 0),
-                          blurRadius: 20)
-                    ],
-                    borderRadius: BorderRadius.all(Radius.circular(100.w)),
-                    border: Border.all(
-                      color: const Color.fromRGBO(103, 58, 183, 1),
-                      width: 2,
-                    ),
-                  ),
-                ));
-          })),
+          leading: Icon(
+            Icons.people,
+            color: const Color.fromARGB(255, 103, 58, 183),
+            size: 4.h,
+          ),
+          actions: [
+            Builder(builder: (context) {
+              return Container(
+                padding: EdgeInsets.only(top: 2.5.h, bottom: 2.5.h, right: 5.w),
+                child: GestureDetector(
+                    onTap: () => Scaffold.of(context).openEndDrawer(),
+                    child: Container(
+                      width: 5.h,
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                                "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg")),
+                        color: const Color.fromRGBO(103, 58, 183, 1),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Color.fromRGBO(103, 58, 183, 1),
+                              offset: Offset(0, 0),
+                              blurRadius: 20)
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(100.w)),
+                        border: Border.all(
+                          color: const Color.fromRGBO(103, 58, 183, 1),
+                          width: 2,
+                        ),
+                      ),
+                    )),
+              );
+            })
+          ]),
       endDrawer: const NavigationDrawer(),
       body: Center(
           child: SafeArea(
@@ -333,7 +342,9 @@ class NavigationDrawer extends StatelessWidget {
                   ),
                 ]),
                 ButtonFunction(
-                    action: () => FirebaseAuth.instance.signOut(),
+                    action: () => FirebaseAuth.instance
+                        .signOut()
+                        .then((value) => Navigator.pop(context)),
                     backgroundColor: const Color.fromARGB(255, 49, 45, 45),
                     color: Colors.white,
                     text: "Cerrar Sesión",
