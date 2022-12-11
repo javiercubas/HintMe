@@ -7,7 +7,7 @@ import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/main.dart';
 import 'package:HintMe/screens/SignUp/phone_verifying_disable.dart';
-import 'package:HintMe/screens/SignUp/upload_avatar.dart';
+import 'package:HintMe/screens/SignUp/avatar/upload_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,4 @@
 import 'package:HintMe/components/avatar.dart';
-import 'package:HintMe/components/header.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
@@ -15,12 +14,22 @@ import 'package:HintMe/components/button_function.dart';
 
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String avatar = "";
+  String name = "";
+  String user = "";
 
   @override
   Widget build(BuildContext context) {
     bool lock = true;
+    getData();
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -50,10 +59,11 @@ class HomePage extends StatelessWidget {
                     child: Container(
                       width: 5.h,
                       decoration: BoxDecoration(
-                        image: const DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                                "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg")),
+                            image: avatar != ""
+                                ? NetworkImage(avatar)
+                                : NetworkImage("")),
                         color: const Color.fromRGBO(103, 58, 183, 1),
                         boxShadow: const [
                           BoxShadow(
@@ -71,16 +81,12 @@ class HomePage extends StatelessWidget {
               );
             })
           ]),
-      endDrawer: const NavigationDrawer(),
+      endDrawer: NavigationDrawer(avatar: avatar, name: name, user: user),
       body: Center(
           child: SafeArea(
               child: Center(
                   child: SingleChildScrollView(
                       child: Column(children: [
-        Gap(3.h),
-        FadeInDown(
-          child: Header(lock: lock),
-        ),
         FadeInDown(
           child: menu(lock),
         ),
@@ -139,33 +145,62 @@ class HomePage extends StatelessWidget {
 
   SizedBox circulos() {
     return SizedBox(
-        width: 90.w,
+        width: 91.w,
         child: Column(
-          children: [headerCirculos(), Gap(2.h), contentCirculos()],
+          children: [
+            headerCirculos(),
+            Gap(2.h),
+            SizedBox(width: 100.w, height: 11.h, child: contentCirculos())
+          ],
         ));
   }
 
-  Row contentCirculos() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  ListView contentCirculos() {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
       children: [
         circulo(text: "All", image: ""),
+        Gap(3.w),
         circulo(
             text: "Universidad",
             image:
                 "https://1000marcas.net/wp-content/uploads/2019/12/UEM-simbolo.jpg"),
+        Gap(3.w),
         circulo(
             text: "Fútbol",
             image:
                 "https://upload.wikimedia.org/wikipedia/commons/0/07/%D0%A4%D0%9A_%22%D0%9A%D0%BE%D0%BB%D0%BE%D1%81%22_%28%D0%97%D0%B0%D1%87%D0%B5%D0%BF%D0%B8%D0%BB%D0%BE%D0%B2%D0%BA%D0%B0%2C_%D0%A5%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_-_%D0%A4%D0%9A_%22%D0%91%D0%B0%D0%BB%D0%BA%D0%B0%D0%BD%D1%8B%22_%28%D0%97%D0%B0%D1%80%D1%8F%2C_%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_%2818790931100%29.jpg"),
+        Gap(3.w),
         circulo(
             text: "Fortnite",
             image:
                 "https://cdn2.unrealengine.com/fortnite-creative-v22-30-update-1920x1080-c8168dd14bd2.png"),
+        Gap(3.w),
         circulo(
             text: "Pueblo",
             image:
-                "https://illescas.es/wp-content/uploads/2020/06/Ayuntamiento_fachada.jpeg")
+                "https://illescas.es/wp-content/uploads/2020/06/Ayuntamiento_fachada.jpeg"),
+        Gap(3.w),
+        circulo(
+            text: "Universidad",
+            image:
+                "https://1000marcas.net/wp-content/uploads/2019/12/UEM-simbolo.jpg"),
+        Gap(3.w),
+        circulo(
+            text: "Fútbol",
+            image:
+                "https://upload.wikimedia.org/wikipedia/commons/0/07/%D0%A4%D0%9A_%22%D0%9A%D0%BE%D0%BB%D0%BE%D1%81%22_%28%D0%97%D0%B0%D1%87%D0%B5%D0%BF%D0%B8%D0%BB%D0%BE%D0%B2%D0%BA%D0%B0%2C_%D0%A5%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_-_%D0%A4%D0%9A_%22%D0%91%D0%B0%D0%BB%D0%BA%D0%B0%D0%BD%D1%8B%22_%28%D0%97%D0%B0%D1%80%D1%8F%2C_%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_%2818790931100%29.jpg"),
+        Gap(3.w),
+        circulo(
+            text: "Fortnite",
+            image:
+                "https://cdn2.unrealengine.com/fortnite-creative-v22-30-update-1920x1080-c8168dd14bd2.png"),
+        Gap(3.w),
+        circulo(
+            text: "Pueblo",
+            image:
+                "https://illescas.es/wp-content/uploads/2020/06/Ayuntamiento_fachada.jpeg"),
       ],
     );
   }
@@ -231,7 +266,7 @@ class HomePage extends StatelessWidget {
       mainAxisAlignment:
           lock ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [buscador(), lock ? upload() : const Center()],
+      children: [buscador(), lock ? upload() : Container()],
     );
   }
 
@@ -246,20 +281,41 @@ class HomePage extends StatelessWidget {
   }
 
   Search buscador() {
-    return Search(text: "Buscar Usuario", action: SearchPage(), width: 70.w);
+    return Search(text: "Buscar usuario", action: SearchPage(), width: 70.w);
+  }
+
+  Future getData() async {
+    final docRef = users.doc(FirebaseAuth.instance.currentUser?.uid);
+    docRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          avatar = data['avatar'];
+          name = data['name'];
+          user = data['user'];
+        });
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
   }
 }
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+  const NavigationDrawer(
+      {super.key,
+      required this.avatar,
+      required this.name,
+      required this.user});
+  final String avatar;
+  final String name;
+  final String user;
 
   @override
   Widget build(BuildContext context) => Drawer(
           child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg"),
+                image: avatar != "" ? NetworkImage(avatar) : NetworkImage(""),
                 fit: BoxFit.cover,
                 opacity: 1000),
             color: Color.fromARGB(255, 39, 36, 36)),
@@ -281,65 +337,21 @@ class NavigationDrawer extends StatelessWidget {
                   Avatar(
                       action: const HomePage(),
                       border: true,
-                      image:
-                          "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg",
+                      image: avatar != "" ? avatar : "",
                       size: 10.h),
                   Gap(2.h),
-                  FutureBuilder<DocumentSnapshot>(
-                    future:
-                        users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text("Something went wrong");
-                      }
-
-                      if (snapshot.hasData && !snapshot.data!.exists) {
-                        return Text("Document does not exist");
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        return Text(
-                          data['name'].toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
-                              color: Colors.white),
-                        );
-                      }
-
-                      return Text("loading");
-                    },
+                  Text(
+                    name != "" ? name.toUpperCase() : "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.sp,
+                        color: Colors.white),
                   ),
-                  FutureBuilder<DocumentSnapshot>(
-                    future:
-                        users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text("Something went wrong");
-                      }
-
-                      if (snapshot.hasData && !snapshot.data!.exists) {
-                        return Text("Document does not exist");
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> data =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        return Text(
-                          "@${data['user']}".toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: 12.sp, color: Colors.white),
-                        );
-                      }
-
-                      return Text("loading");
-                    },
+                  Text(
+                    user != "" ? "@$user".toUpperCase() : "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                 ]),
                 ButtonFunction(

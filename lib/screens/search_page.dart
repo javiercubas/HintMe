@@ -1,5 +1,6 @@
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:HintMe/screens/perfil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -29,8 +30,8 @@ class _SearchPageState extends State<SearchPage> {
                     Icons.search,
                     color: Colors.white,
                   ),
-                  hintText: 'Search...',
-                  hintStyle: TextStyle(color: Colors.white54)),
+                  hintText: 'Buscar usuario',
+                  hintStyle: TextStyle(color: Colors.white54, fontSize: 12.sp)),
               style: TextStyle(color: Colors.white),
               onChanged: (val) {
                 setState(() {
@@ -55,31 +56,38 @@ class _SearchPageState extends State<SearchPage> {
                       if (name.isEmpty) {
                         return Column(
                           children: [
-                            ListTile(
-                                title: Text(
-                                  "@${data['user']}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  data['name'],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.white54,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                leading: Avatar(
-                                    action: HomePage(),
-                                    border: true,
-                                    image:
-                                        "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg",
-                                    size: 7.h)),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PerfilPage(
+                                          uid:
+                                              snapshots.data!.docs[index].id))),
+                              child: ListTile(
+                                  title: Text(
+                                    "@${data['user']}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    data['name'],
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  leading: Avatar(
+                                      action: HomePage(),
+                                      border: true,
+                                      image: data['avatar'],
+                                      size: 7.h)),
+                            ),
                             Divider(
                               color: Colors.white,
                             )
@@ -89,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                       if (data['user']
                               .toString()
                               .toLowerCase()
-                              .startsWith(name.toLowerCase()) ||
+                              .contains(name.toLowerCase()) ||
                           data['name']
                               .toString()
                               .toLowerCase()
@@ -118,8 +126,7 @@ class _SearchPageState extends State<SearchPage> {
                                 leading: Avatar(
                                     action: HomePage(),
                                     border: true,
-                                    image:
-                                        "https://cdn.pixabay.com/photo/2015/08/05/04/25/people-875617_960_720.jpg",
+                                    image: data['avatar'],
                                     size: 7.h)),
                             Divider(
                               color: Colors.white,

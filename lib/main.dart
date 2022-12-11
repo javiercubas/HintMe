@@ -1,6 +1,6 @@
 import 'package:HintMe/screens/Login/login.dart';
 import 'package:HintMe/screens/SignUp/create_user.dart';
-import 'package:HintMe/screens/SignUp/upload_avatar.dart';
+import 'package:HintMe/screens/SignUp/avatar/upload_avatar.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

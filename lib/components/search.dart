@@ -44,8 +44,7 @@ class Search extends StatelessWidget {
               ),
               Gap(3.w),
               Text(text,
-                  style: const TextStyle(
-                      color: Colors.white, fontStyle: FontStyle.italic)),
+                  style: TextStyle(color: Colors.white, fontSize: 12.sp)),
             ],
           ),
         ));

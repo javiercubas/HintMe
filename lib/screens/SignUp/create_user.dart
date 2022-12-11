@@ -18,6 +18,7 @@ class CreateUserPage extends StatefulWidget {
 
 class _CreateUserPageState extends State<CreateUserPage> {
   final userController = TextEditingController();
+  String avatar = "";
 
   @override
   void dispose() {
@@ -26,8 +27,22 @@ class _CreateUserPageState extends State<CreateUserPage> {
     super.dispose();
   }
 
+  Future getData() async {
+    final docRef = users.doc(FirebaseAuth.instance.currentUser?.uid);
+    docRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          avatar = data['avatar'];
+        });
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
         body: Center(
             child: Container(
@@ -69,10 +84,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
             children: [
               Avatar(
                   action: const Text(""),
-                  size: 8.h,
-                  image:
-                      "https://pps.whatsapp.net/v/t61.24694-24/181714536_241960988059393_3937636634380900533_n.jpg?ccb=11-4&oh=01_AdSHRxRktYkYnhGVej3oPR3yfKPvhEmPCEsBIEhIVkWDSA&oe=639871D0",
-                  border: false),
+                  size: 7.5.h,
+                  image: avatar,
+                  border: true),
               InputForm(
                   controller: userController,
                   password: false,

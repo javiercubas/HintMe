@@ -19,7 +19,7 @@ class IndirectasContainer extends StatelessWidget {
               fontFamily: 'Plus Jakarta Sans',
               fontSize: 16.sp)),
       Gap(3.h),
-      lock ? indirectasError() : indirectasError()
+      lock ? indirectasError() : indirectasStories()
     ]);
   }
 
@@ -43,6 +43,51 @@ class IndirectasContainer extends StatelessWidget {
           fontWeight: FontWeight.normal,
         ),
       )),
+    );
+  }
+
+  Container indirectasStories() {
+    return Container(
+      height: 30.h,
+      width: 100.w,
+      child: ListView.builder(
+        itemCount: 3,
+        scrollDirection: Axis.horizontal,
+        prototypeItem: Row(children: [
+          Container(
+              width: 50.w,
+              height: 100.h,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromARGB(255, 75, 13, 81),
+                        Color.fromARGB(255, 31, 3, 98)
+                      ]),
+                  borderRadius: BorderRadius.all(Radius.circular(12)))),
+          Gap(3.w),
+        ]),
+        itemBuilder: (context, index) {
+          return Row(children: [
+            Container(
+                width: 50.w,
+                height: 100.h,
+                transform: Matrix4.rotationZ(-0.3),
+                alignment: Alignment.bottomRight,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(255, 75, 13, 81),
+                          Color.fromARGB(255, 31, 3, 98)
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(12)))),
+            Gap(3.w),
+          ]);
+        },
+      ),
     );
   }
 }
