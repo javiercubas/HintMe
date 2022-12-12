@@ -4,6 +4,7 @@ import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:HintMe/screens/search_page.dart';
+import 'package:HintMe/screens/settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -335,7 +336,7 @@ class NavigationDrawer extends StatelessWidget {
                   ),
                   Gap(2.h),
                   Avatar(
-                      action: const HomePage(),
+                      action: const SettingsPage(),
                       border: true,
                       image: avatar != "" ? avatar : "",
                       size: 10.h),

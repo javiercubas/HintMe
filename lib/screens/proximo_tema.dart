@@ -1,4 +1,3 @@
-import 'package:HintMe/components/header.dart';
 import 'package:HintMe/components/title.dart';
 import 'package:HintMe/screens/tema_diario.dart';
 import 'package:animate_do/animate_do.dart';

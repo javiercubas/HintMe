@@ -15,17 +15,43 @@ import 'package:HintMe/Utils.dart' as Util;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import 'firebase_options.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialization(null);
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  await messaging.setForegroundNotificationPresentationOptions(
-    alert: true, // Required to display a heads up notification
+  messaging.getToken();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
     badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
     sound: true,
   );
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print(
+          'Message also contained a notification: ${message.notification?.body}');
+    }
+  });
 
   final prefs = await SharedPreferences.getInstance();
   final showOnBoarding = prefs.getBool('showOnBoarding') ?? true;
