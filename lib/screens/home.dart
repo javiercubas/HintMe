@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
         circulo(
             text: "Pueblo",
             image:
-                "https://illescas.es/wp-content/uploads/2020/06/Ayuntamiento_fachada.jpeg"),
+                "https://static.amazon.jobs/locations/193/thumbnails/FC-llescas-Spain-543x543.jpg?1514371797"),
         Gap(3.w),
         circulo(
             text: "Universidad",
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
         circulo(
             text: "Pueblo",
             image:
-                "https://illescas.es/wp-content/uploads/2020/06/Ayuntamiento_fachada.jpeg"),
+                "https://static.amazon.jobs/locations/193/thumbnails/FC-llescas-Spain-543x543.jpg?1514371797"),
       ],
     );
   }

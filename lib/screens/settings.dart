@@ -1,4 +1,5 @@
 import 'package:HintMe/components/avatar.dart';
+import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,9 +37,9 @@ class _SettingsPageState extends State<SettingsPage> {
           avatar = data['avatar'];
           name = data['name'];
           user = data['user'];
-          user = data['bio'];
-          user = data['link'];
-          user = data['location'];
+          bio = data['bio'];
+          link = data['link'];
+          location = data['location'];
         });
       },
       onError: (e) => print("Error getting document: $e"),
@@ -76,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Container accountSettings() {
     return Container(
       width: 80.w,
-      height: 50.h,
+      height: 65.h,
       decoration: const BoxDecoration(
           // color: Color.fromARGB(255, 49, 45, 45),
           borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -104,16 +105,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               inputField(
-                  text: "Name", variable: name, controller: nameController),
+                  text: "Nombre", variable: name, controller: nameController),
               inputField(
-                  text: "Username", variable: user, controller: userController),
+                  text: "Usuario", variable: user, controller: userController),
               inputField(text: "Bio", variable: bio, controller: bioController),
               inputField(
-                  text: "Link", variable: link, controller: linkController),
+                  text: "Url", variable: link, controller: linkController),
               inputField(
-                  text: "Location",
+                  text: "Localización",
                   variable: location,
-                  controller: locationController)
+                  controller: locationController),
+              ButtonFunction(
+                  action: () => updateUser(),
+                  backgroundColor: Colors.white,
+                  color: Colors.black,
+                  text: "Guardar Cambios",
+                  width: 80.w,
+                  fontStyle: FontStyle.normal)
             ]),
       ),
     );
@@ -123,6 +131,7 @@ class _SettingsPageState extends State<SettingsPage> {
       {required String text,
       required String variable,
       required TextEditingController controller}) {
+    controller.text = variable;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -131,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
           style: TextStyle(color: Colors.white, fontSize: 14.sp),
         ),
         Container(
-          width: 55.w,
+          width: 50.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Color.fromARGB(255, 49, 45, 45),
@@ -141,7 +150,8 @@ class _SettingsPageState extends State<SettingsPage> {
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               filled: true,
-              contentPadding: EdgeInsets.only(left: 20),
+              contentPadding: EdgeInsets.only(left: 20, right: 20),
+              hintMaxLines: 1,
               fillColor: const Color.fromARGB(255, 49, 45, 45),
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -150,11 +160,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Colors.white54,
                 fontStyle: FontStyle.italic,
               ),
-              hintText: variable,
+              hintText: variable != ""
+                  ? variable
+                  : "Introduce un ${text.toLowerCase()}",
             ),
             style: TextStyle(color: Colors.white),
           ),
-        )
+        ),
       ],
     );
   }
@@ -203,5 +215,26 @@ class _SettingsPageState extends State<SettingsPage> {
                 backgroundColor: Color.fromARGB(0, 0, 0, 0))
           ]),
     );
+  }
+
+  Future updateUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    final json = {
+      'name': nameController.text.trim(),
+      'user': userController.text.trim(),
+      'bio': bioController.text.trim(),
+      'link': linkController.text.trim(),
+      'location': locationController.text.trim(),
+    };
+
+    await docUser
+        .set(json, SetOptions(merge: true))
+        .then((value) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            ));
   }
 }
