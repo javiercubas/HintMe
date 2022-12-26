@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 
 class CameraPage extends StatefulWidget {
@@ -32,9 +34,6 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
-
     switch (_widgetState) {
       case WidgetState.NONE:
       case WidgetState.LOADING:
@@ -66,7 +65,18 @@ class _CameraPageState extends State<CameraPage> {
                 child: Text(
                     "¡Ooops! Error al cargar la cámara 😩. Reinicia la apliación.")));
     }
-    return Container();
+  }
+
+  void pickUploadProfilePic(url) async {
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child("users/${FirebaseAuth.instance.currentUser?.uid}.jpg");
+
+    await ref.putFile(File(url));
+
+    ref.getDownloadURL().then((value) async {
+      Navigator.pop(context, value);
+    });
   }
 
   Widget buildScaffold(BuildContext context, Widget body) {
@@ -86,7 +96,7 @@ class _CameraPageState extends State<CameraPage> {
             _cameraController.takePicture().then((XFile? file) {
               if (mounted) {
                 if (file != null) {
-                  print("Picutre saved to ${file.path}");
+                  pickUploadProfilePic(file.path);
                 }
               }
             });

@@ -1,12 +1,12 @@
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/icon_button.dart';
+import 'package:HintMe/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:animate_do/animate_do.dart';
-import 'home.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
