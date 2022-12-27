@@ -78,15 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               password: true,
               text: "Introduce tu contraseña",
               width: 80.w,
-              validator: ((value) => value != null &&
-                      value.length >= 8 &&
-                      value.length <= 18 &&
-                      !isNumeric(value) &&
-                      !isLowercase(value) &&
-                      !isUppercase(value) &&
-                      !isAlpha(value)
-                  ? null
-                  : "Introduce una contraseña válida")),
+              validator: null),
           Gap(3.h),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             ButtonAction(

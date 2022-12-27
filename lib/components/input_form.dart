@@ -56,7 +56,7 @@ class InputForm extends StatelessWidget {
             hintText: text,
           ),
           textInputAction: TextInputAction.done,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.disabled,
           validator: validator,
           style: const TextStyle(
             color: Colors.white,

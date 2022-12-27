@@ -221,7 +221,7 @@ class _HomePageState extends State<HomePage> {
         Gap(1.h),
         Text(
           text,
-          style: TextStyle(color: Colors.white, fontSize: 11.sp),
+          style: TextStyle(color: Colors.white, fontSize: 10.sp),
         )
       ],
     );
