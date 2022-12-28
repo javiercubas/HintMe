@@ -22,24 +22,62 @@ class _DescubrirGenteState extends State<DescubrirGente> {
         backgroundColor: Color.fromARGB(255, 39, 36, 36),
         appBar: appBar(),
         body: Center(
-          child: Container(
-            color: Color.fromARGB(255, 60, 52, 133),
-            width: 95.w,
+          child: SizedBox(
+            width: 90.w,
             height: 90.h,
             child: Column(
               children: [
                 Container(
-                    color: Color.fromARGB(255, 30, 99, 99),
                     height: 70.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
                     child: Stack(
                       children: [
-                        Positioned(
-                          child: Image(
-                            image: NetworkImage(
-                                "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
-                            fit: BoxFit.cover,
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
+                                    fit: BoxFit.cover)),
                           ),
-                        )
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color.fromARGB(0, 0, 0, 0),
+                                    Color.fromARGB(255, 0, 0, 0)
+                                  ]),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 3.h,
+                            left: 5.w,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Sergio, 19",
+                                    style: TextStyle(
+                                        fontSize: 21.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Universidad Europea de Madrid",
+                                    style: TextStyle(
+                                        fontSize: 15.sp, color: Colors.white),
+                                  ),
+                                ]))
                       ],
                     ))
               ],
