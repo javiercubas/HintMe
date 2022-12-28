@@ -1,5 +1,7 @@
+import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/title.dart';
 import 'package:HintMe/screens/home.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -33,31 +35,39 @@ class _DescubrirGenteState extends State<DescubrirGente> {
                         borderRadius: BorderRadius.all(Radius.circular(12))),
                     child: Stack(
                       children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
-                                    fit: BoxFit.cover)),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color.fromARGB(0, 0, 0, 0),
-                                    Color.fromARGB(255, 0, 0, 0)
-                                  ]),
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
+                                        fit: BoxFit.cover)),
+                              ),
                             ),
-                          ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(0, 0, 0, 0),
+                                        Color.fromARGB(255, 0, 0, 0)
+                                      ]),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Positioned(
                             bottom: 3.h,
@@ -83,7 +93,29 @@ class _DescubrirGenteState extends State<DescubrirGente> {
               ],
             ),
           ),
-        ));
+        ),
+        bottomNavigationBar: FadeInUp(child: bottomMenu()));
+  }
+
+  Container bottomMenu() {
+    return Container(
+      height: 10.h,
+      decoration: const BoxDecoration(color: Color.fromARGB(255, 39, 36, 36)),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        IconButtonES(
+            action: DescubrirGente(),
+            icon: Icons.close_rounded,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(255, 39, 36, 36)),
+        IconButtonES(
+            action: DescubrirGente(),
+            icon: Icons.favorite,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(255, 39, 36, 36))
+      ]),
+    );
   }
 
   AppBar appBar() {
