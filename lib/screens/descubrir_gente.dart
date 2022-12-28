@@ -28,7 +28,7 @@ class _DescubrirGenteState extends State<DescubrirGente> {
             child: Column(
               children: [
                 Container(
-                    height: 70.h,
+                    height: 75.h,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12))),
                     child: Stack(
