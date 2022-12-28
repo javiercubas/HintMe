@@ -19,13 +19,33 @@ class _DescubrirGenteState extends State<DescubrirGente> {
   Widget build(BuildContext context) {
     getData();
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 39, 36, 36),
-      appBar: appBar(),
-      body: Container(
-        width: 90.w,
-        height: 90.h,
-      ),
-    );
+        backgroundColor: Color.fromARGB(255, 39, 36, 36),
+        appBar: appBar(),
+        body: Center(
+          child: Container(
+            color: Color.fromARGB(255, 60, 52, 133),
+            width: 95.w,
+            height: 90.h,
+            child: Column(
+              children: [
+                Container(
+                    color: Color.fromARGB(255, 30, 99, 99),
+                    height: 70.h,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: Image(
+                            image: NetworkImage(
+                                "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          ),
+        ));
   }
 
   AppBar appBar() {

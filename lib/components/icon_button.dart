@@ -42,7 +42,10 @@ class IconButtonES extends StatelessWidget {
           color: color,
           icon: Icon(icon),
           onPressed: () {
-            Get.to(() => const ProximoTemaPage());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => action),
+            );
           },
         ));
   }
