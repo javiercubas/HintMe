@@ -2,6 +2,7 @@ import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
+import 'package:HintMe/screens/descubrir_gente.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:HintMe/screens/search_page.dart';
 import 'package:HintMe/screens/settings.dart';
@@ -102,28 +103,26 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 10.h,
       decoration: const BoxDecoration(color: Color.fromARGB(255, 49, 45, 45)),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.home_outlined,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0)),
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.person_add_alt,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0)),
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.message_outlined,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0))
-          ]),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        IconButtonES(
+            action: DescubrirGente(),
+            icon: Icons.home_outlined,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0)),
+        IconButtonES(
+            action: DescubrirGente(),
+            icon: Icons.person_add_alt,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0)),
+        IconButtonES(
+            action: DescubrirGente(),
+            icon: Icons.message_outlined,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0))
+      ]),
     );
   }
 
