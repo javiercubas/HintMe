@@ -33,62 +33,138 @@ class _DescubrirGenteState extends State<DescubrirGente> {
                     height: 75.h,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12))),
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
-                                        fit: BoxFit.cover)),
-                              ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 75.h,
+                            child: Stack(
+                              children: [
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(12)),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdRcXteDwqmT-Ef1wYTvdIVB-6ORMgY4v1FjXYpOelGS5w&oe=63B99AFE"),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                          gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                Color.fromARGB(0, 0, 0, 0),
+                                                Color.fromARGB(255, 0, 0, 0)
+                                              ]),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                    bottom: 3.h,
+                                    left: 5.w,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Sergio, 19",
+                                            style: TextStyle(
+                                                fontSize: 21.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          Text(
+                                            "Universidad Europea de Madrid",
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                color: Colors.white),
+                                          ),
+                                        ]))
+                              ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color.fromARGB(0, 0, 0, 0),
-                                        Color.fromARGB(255, 0, 0, 0)
-                                      ]),
+                          ),
+                          Container(
+                            width: 90.w,
+                            height: 40.h,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                              color: Colors.white,
+                            ),
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  width: 85.w,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Sergio, 19 - Villaverde",
+                                        style: TextStyle(
+                                            fontSize: 21.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        "",
+                                        style: TextStyle(
+                                            fontSize: 7.sp,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        "miembro desde Noviermbre de 2022",
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "2º Ingeniería informática",
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "Universidad Europea de Madrid",
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: Colors.grey),
+                                      ),
+                                      Text(
+                                        "",
+                                        style: TextStyle(
+                                            fontSize: 7.sp,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        "Apasionado de la moda juvenil, experto en coches y cuñado del año 2022. Es broma niño yo te quiero.",
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        Positioned(
-                            bottom: 3.h,
-                            left: 5.w,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Sergio, 19",
-                                    style: TextStyle(
-                                        fontSize: 21.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Universidad Europea de Madrid",
-                                    style: TextStyle(
-                                        fontSize: 15.sp, color: Colors.white),
-                                  ),
-                                ]))
-                      ],
+                          )
+                        ],
+                      ),
                     ))
               ],
             ),
