@@ -53,10 +53,15 @@ class _HomePageState extends State<HomePage> {
           toolbarHeight: 10.h,
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 39, 36, 36),
-          leading: Icon(
-            Icons.people,
-            color: const Color.fromARGB(255, 103, 58, 183),
-            size: 4.h,
+          leading: Row(
+            children: [
+              Gap(0.5.w),
+              Icon(
+                Icons.people,
+                color: const Color.fromARGB(255, 103, 58, 183),
+                size: 4.h,
+              ),
+            ],
           ),
           actions: [
             Builder(builder: (context) {

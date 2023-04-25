@@ -1,9 +1,11 @@
 import 'package:HintMe/components/avatar.dart';
+import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirecta.dart';
 import 'package:HintMe/components/title.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:HintMe/screens/perfil.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
@@ -41,127 +43,154 @@ class _DescubrirGenteState extends State<DescubrirGente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 39, 36, 36),
-        appBar: appBar(usuario: widget.usuario),
-        body: Center(
-          child: SizedBox(
-            width: 90.w,
-            height: 90.h,
-            child: Column(
-              children: [
-                main(),
-                Gap(2.h),
-                like_or_no(),
-              ],
-            ),
+      backgroundColor: Color.fromARGB(255, 39, 36, 36),
+      appBar: appBar(usuario: widget.usuario),
+      body: Center(
+        child: SizedBox(
+          width: 90.w,
+          height: 90.h,
+          child: Column(
+            children: [
+              main(),
+              Gap(2.h),
+              like_or_no(),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Container main() {
     return Container(
-        height: 75.h,
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12))),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 75.h,
-                child: Stack(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            //borderRadius: BorderRadius.all(Radius.circular(12)),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdTDj8MIEI5swJV842kkwAQTPKpY8GOhrQJx0Xsal5y06A&oe=6450C6FE"),
-                                fit: BoxFit.cover)),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
+      height: 75.h,
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12))),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 75.h,
+              child: Stack(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
                           //borderRadius: BorderRadius.all(Radius.circular(12)),
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color.fromARGB(0, 0, 0, 0),
-                                Color.fromARGB(255, 0, 0, 0)
-                              ]),
-                        ),
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdTDj8MIEI5swJV842kkwAQTPKpY8GOhrQJx0Xsal5y06A&oe=6450C6FE"),
+                              fit: BoxFit.cover)),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        //borderRadius: BorderRadius.all(Radius.circular(12)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color.fromARGB(0, 0, 0, 0),
+                              Color.fromARGB(255, 0, 0, 0)
+                            ]),
                       ),
                     ),
-                    isFull
-                        ? Positioned(
-                            bottom: 3.h,
-                            left: 5.w,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Sergio, 19",
-                                    style: TextStyle(
-                                        fontSize: 21.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Universidad Europea de Madrid",
-                                    style: TextStyle(
-                                        fontSize: 15.sp, color: Colors.white),
-                                  ),
-                                ]))
-                        : Container()
-                  ],
-                ),
+                  ),
+                  isFull
+                      ? Positioned(
+                          bottom: 3.h,
+                          left: 5.w,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Sergio, 19",
+                                  style: TextStyle(
+                                      fontSize: 21.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  "Universidad Europea de Madrid",
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.white),
+                                ),
+                              ]))
+                      : Container()
+                ],
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                width: 90.w,
-                color: Color.fromARGB(255, 217, 217, 217),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Sergio, 19 - Villaverde",
-                        style: TextStyle(
-                            fontSize: 21.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      Gap(1.h),
-                      textInfo(texto: "Miembro desde noviembre de 2022"),
-                      textInfo(texto: "2º de Ingeniería Informática"),
-                      textInfo(texto: "Universidad Europea de Madrid"),
-                      Gap(2.h),
-                      Text(
-                        "Apasionado de la moda juvenil, experto en coches y cuñado del año 2022. Es broma niño yo te quiero.",
-                        style: TextStyle(fontSize: 15.sp, color: Colors.black),
-                      ),
-                      Gap(2.h),
-                      Text(
-                        "Sus HintMe más populares",
-                        style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      Gap(1.h),
-                      indirecta(
-                          usuario_actual: widget.usuario,
-                          usuario: widget.usuario,
-                          mensaje: "¿Te gusta el cine?",
-                          fecha: "Hace 2 horas"),
-                    ]),
-              ),
-            ],
-          ),
-        ));
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+              width: 90.w,
+              color: Color.fromARGB(255, 217, 217, 217),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Sergio, 19 - Villaverde",
+                      style: TextStyle(
+                          fontSize: 21.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Gap(1.h),
+                    textInfo(texto: "Miembro desde noviembre de 2022"),
+                    textInfo(texto: "2º de Ingeniería Informática"),
+                    textInfo(texto: "Universidad Europea de Madrid"),
+                    Gap(2.h),
+                    Text(
+                      "Apasionado de la moda juvenil, experto en coches y cuñado del año 2022. Es broma niño yo te quiero.",
+                      style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                    ),
+                    Gap(2.h),
+                    Text(
+                      "Sus HintMe más populares",
+                      style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    Gap(1.h),
+                    indirecta(
+                        usuario_actual: widget.usuario,
+                        usuario: widget.usuario,
+                        mensaje: "¿Te gusta el cine?",
+                        fecha: "Hace 2 horas"),
+                  ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container bottomMenu() {
+    return Container(
+      height: 10.h,
+      decoration: const BoxDecoration(color: Color.fromARGB(255, 39, 36, 36)),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        IconButtonES(
+            action: DescubrirGente(
+              usuario: widget.usuario,
+            ),
+            icon: Icons.close_rounded,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(255, 39, 36, 36)),
+        IconButtonES(
+            action: DescubrirGente(
+              usuario: widget.usuario,
+            ),
+            icon: Icons.favorite,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(255, 39, 36, 36))
+      ]),
+    );
   }
 
   Text textInfo({required String texto}) {
