@@ -3,14 +3,16 @@ import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
-import 'package:HintMe/components/social_button.dart';
+import 'package:HintMe/model/bbdd.dart';
+import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/forgot_password.dart';
+import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:HintMe/screens/SignUp/sign_up.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:validators/validators.dart';
 import 'package:HintMe/main.dart';
 
@@ -124,28 +126,6 @@ class _LoginPageState extends State<LoginPage> {
           ]),
           Gap(1.h),
           forgotPassword(context),
-          Gap(4.h),
-          const Separator(),
-          Gap(4.h),
-          SizedBox(
-            width: 80.w,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  SocialButton(
-                      image:
-                          "https://assets.stickpng.com/images/5847f9cbcef1014c0b5e48c8.png",
-                      action: 'signInWithGoogle()'),
-                  SocialButton(
-                      image:
-                          "https://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png",
-                      action: 'signInWithGoogle()'),
-                  SocialButton(
-                      image:
-                          "https://cdn-icons-png.flaticon.com/512/20/20673.png",
-                      action: 'signInWithGoogle()'),
-                ]),
-          )
         ]),
       ),
     );
@@ -185,15 +165,18 @@ class _LoginPageState extends State<LoginPage> {
             child: const Center(
               child: CircularProgressIndicator(color: Colors.white),
             )));
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(
-          "El correo y/o la contraseña introducidos son incorrectos. Intenta introducirlos de nuevo.");
-    }
+    Usuario? usuario =
+        await Conexion.login(emailController.text, passwordController.text);
 
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    if (usuario != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('currentUser', usuario.id);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(usuario: usuario)),
+      );
+    } else {
+      Navigator.pop(context);
+    }
   }
 }

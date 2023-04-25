@@ -2,36 +2,42 @@ import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
+import 'package:HintMe/model/circulos.dart';
+import 'package:HintMe/model/usuario.dart';
+import 'package:HintMe/screens/Login/login.dart';
 import 'package:HintMe/screens/descubrir_gente.dart';
+import 'package:HintMe/screens/perfil.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:HintMe/screens/search_page.dart';
 import 'package:HintMe/screens/settings.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:HintMe/components/button_function.dart';
-
-CollectionReference users = FirebaseFirestore.instance.collection('users');
+import 'package:HintMe/model/bbdd.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Usuario usuario;
+  const HomePage({super.key, required this.usuario});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  String avatar = "";
-  String name = "";
-  String user = "";
+  late Usuario _usuario;
+
+  void initState() {
+    super.initState();
+    _usuario = widget.usuario;
+  }
 
   @override
   Widget build(BuildContext context) {
     bool lock = true;
-    getData();
+
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -63,9 +69,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: avatar != ""
-                                ? NetworkImage(avatar)
-                                : NetworkImage("")),
+                            image: NetworkImage(_usuario?.avatar ?? "")),
                         color: const Color.fromRGBO(103, 58, 183, 1),
                         boxShadow: const [
                           BoxShadow(
@@ -83,16 +87,16 @@ class _HomePageState extends State<HomePage> {
               );
             })
           ]),
-      endDrawer: NavigationDrawer(avatar: avatar, name: name, user: user),
+      endDrawer: NavigationDrawer(usuario: _usuario),
       body: Center(
           child: SafeArea(
               child: Center(
                   child: SingleChildScrollView(
                       child: Column(children: [
         FadeInDown(
-          child: menu(lock),
+          child: menu(lock, usuario: _usuario),
         ),
-        content(lock),
+        content(lock, usuario: _usuario),
       ]))))),
       backgroundColor: const Color.fromARGB(255, 39, 36, 36),
       bottomNavigationBar: FadeInUp(child: bottomMenu()),
@@ -105,20 +109,29 @@ class _HomePageState extends State<HomePage> {
       decoration: const BoxDecoration(color: Color.fromARGB(255, 49, 45, 45)),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         IconButtonES(
-            action: DescubrirGente(),
+            action: DescubrirGente(usuario: _usuario),
             icon: Icons.home_outlined,
             borderRadius: 0,
             color: Colors.white,
             backgroundColor: Color.fromARGB(0, 0, 0, 0)),
         IconButtonES(
-            action: DescubrirGente(),
+            action: DescubrirGente(usuario: _usuario),
             icon: Icons.person_add_alt,
             borderRadius: 0,
             color: Colors.white,
             backgroundColor: Color.fromARGB(0, 0, 0, 0)),
         IconButtonES(
-            action: DescubrirGente(),
+            action: DescubrirGente(usuario: _usuario),
             icon: Icons.message_outlined,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0)),
+        IconButtonES(
+            action: PerfilPage(
+              usuario: _usuario,
+              usuario_actual: _usuario,
+            ),
+            icon: Icons.person,
             borderRadius: 0,
             color: Colors.white,
             backgroundColor: Color.fromARGB(0, 0, 0, 0))
@@ -126,13 +139,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Column content(bool lock) {
+  Column content(bool lock, {required Usuario usuario}) {
     return Column(
       children: [
         lock ? Gap(4.h) : Gap(0.h),
         ZoomIn(child: temaDiario(lock)),
         lock ? Gap(3.h) : Gap(0.h),
-        FadeInLeft(child: circulos()),
+        FadeInLeft(child: circulos(usuario: usuario)),
         Gap(4.h),
         FadeInRight(
           child: IndirectasContainer(
@@ -143,65 +156,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SizedBox circulos() {
+  SizedBox circulos({required Usuario usuario}) {
     return SizedBox(
         width: 91.w,
         child: Column(
           children: [
             headerCirculos(),
             Gap(2.h),
-            SizedBox(width: 100.w, height: 11.h, child: contentCirculos())
+            SizedBox(
+                width: 100.w,
+                height: 11.h,
+                child: contentCirculos(usuario: usuario))
           ],
         ));
   }
 
-  ListView contentCirculos() {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      children: [
-        circulo(text: "All", image: ""),
-        Gap(3.w),
-        circulo(
-            text: "Universidad",
-            image:
-                "https://1000marcas.net/wp-content/uploads/2019/12/UEM-simbolo.jpg"),
-        Gap(3.w),
-        circulo(
-            text: "Fútbol",
-            image:
-                "https://upload.wikimedia.org/wikipedia/commons/0/07/%D0%A4%D0%9A_%22%D0%9A%D0%BE%D0%BB%D0%BE%D1%81%22_%28%D0%97%D0%B0%D1%87%D0%B5%D0%BF%D0%B8%D0%BB%D0%BE%D0%B2%D0%BA%D0%B0%2C_%D0%A5%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_-_%D0%A4%D0%9A_%22%D0%91%D0%B0%D0%BB%D0%BA%D0%B0%D0%BD%D1%8B%22_%28%D0%97%D0%B0%D1%80%D1%8F%2C_%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_%2818790931100%29.jpg"),
-        Gap(3.w),
-        circulo(
-            text: "Fortnite",
-            image:
-                "https://cdn2.unrealengine.com/fortnite-creative-v22-30-update-1920x1080-c8168dd14bd2.png"),
-        Gap(3.w),
-        circulo(
-            text: "Pueblo",
-            image:
-                "https://static.amazon.jobs/locations/193/thumbnails/FC-llescas-Spain-543x543.jpg?1514371797"),
-        Gap(3.w),
-        circulo(
-            text: "Universidad",
-            image:
-                "https://1000marcas.net/wp-content/uploads/2019/12/UEM-simbolo.jpg"),
-        Gap(3.w),
-        circulo(
-            text: "Fútbol",
-            image:
-                "https://upload.wikimedia.org/wikipedia/commons/0/07/%D0%A4%D0%9A_%22%D0%9A%D0%BE%D0%BB%D0%BE%D1%81%22_%28%D0%97%D0%B0%D1%87%D0%B5%D0%BF%D0%B8%D0%BB%D0%BE%D0%B2%D0%BA%D0%B0%2C_%D0%A5%D0%B0%D1%80%D1%8C%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_-_%D0%A4%D0%9A_%22%D0%91%D0%B0%D0%BB%D0%BA%D0%B0%D0%BD%D1%8B%22_%28%D0%97%D0%B0%D1%80%D1%8F%2C_%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%BA%D0%B0%D1%8F_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C%29_%2818790931100%29.jpg"),
-        Gap(3.w),
-        circulo(
-            text: "Fortnite",
-            image:
-                "https://cdn2.unrealengine.com/fortnite-creative-v22-30-update-1920x1080-c8168dd14bd2.png"),
-        Gap(3.w),
-        circulo(
-            text: "Pueblo",
-            image:
-                "https://static.amazon.jobs/locations/193/thumbnails/FC-llescas-Spain-543x543.jpg?1514371797"),
-      ],
+  FutureBuilder<List<Circulo?>> contentCirculos({required Usuario usuario}) {
+    return FutureBuilder<List<Circulo?>>(
+      future: Conexion.consultarCirculos(usuario.id),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final circulos = snapshot.data!;
+          return ListView(
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            children: circulos
+                .map((circulo_) => Column(
+                      children: [
+                        circulo(
+                          text: circulo_!.nombre,
+                          image: circulo_.foto,
+                        ),
+                        Gap(3.w),
+                      ],
+                    ))
+                .toList(),
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error al cargar los círculos');
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 
@@ -261,18 +257,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Row menu(lock) {
+  Row menu(lock, {required Usuario usuario}) {
     return Row(
       mainAxisAlignment:
           lock ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [buscador(), lock ? upload() : Container()],
+      children: [buscador(), lock ? upload(usuario: usuario) : Container()],
     );
   }
 
-  IconButtonES upload() {
-    return const IconButtonES(
-      action: ProximoTemaPage(),
+  IconButtonES upload({required usuario}) {
+    return IconButtonES(
+      action: ProximoTemaPage(usuario: usuario),
       icon: Icons.upload_file,
       borderRadius: 10,
       backgroundColor: Colors.white,
@@ -281,41 +277,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   Search buscador() {
-    return Search(text: "Buscar usuario", action: SearchPage(), width: 70.w);
-  }
-
-  Future getData() async {
-    final docRef = users.doc(FirebaseAuth.instance.currentUser?.uid);
-    docRef.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        setState(() {
-          avatar = data['avatar'];
-          name = data['name'];
-          user = data['user'];
-        });
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
+    return Search(
+        text: "Buscar usuario",
+        action: SearchPage(
+          usuario_actual: _usuario,
+        ),
+        width: 70.w);
   }
 }
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer(
-      {super.key,
-      required this.avatar,
-      required this.name,
-      required this.user});
-  final String avatar;
-  final String name;
-  final String user;
+  const NavigationDrawer({super.key, required this.usuario});
+  final Usuario usuario;
 
   @override
   Widget build(BuildContext context) => Drawer(
           child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: avatar != "" ? NetworkImage(avatar) : NetworkImage(""),
+                image: NetworkImage(usuario.avatar!),
                 fit: BoxFit.cover,
                 opacity: 1000),
             color: Color.fromARGB(255, 39, 36, 36)),
@@ -335,13 +315,13 @@ class NavigationDrawer extends StatelessWidget {
                   ),
                   Gap(2.h),
                   Avatar(
-                      action: const SettingsPage(),
+                      action: SettingsPage(usuario: usuario),
                       border: true,
-                      image: avatar != "" ? avatar : "",
+                      image: usuario.avatar!,
                       size: 10.h),
                   Gap(2.h),
                   Text(
-                    name != "" ? name.toUpperCase() : "",
+                    usuario.nombre != "" ? usuario.nombre.toUpperCase() : "",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -349,15 +329,23 @@ class NavigationDrawer extends StatelessWidget {
                         color: Colors.white),
                   ),
                   Text(
-                    user != "" ? "@$user".toUpperCase() : "",
+                    usuario!.user != ""
+                        ? "@${usuario!.user}".toUpperCase()
+                        : "",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                 ]),
                 ButtonFunction(
-                    action: () => FirebaseAuth.instance
-                        .signOut()
-                        .then((value) => Navigator.pop(context)),
+                    action: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setInt('currentUser', 0);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
                     backgroundColor: const Color.fromARGB(255, 49, 45, 45),
                     color: Colors.white,
                     text: "Cerrar Sesión",

@@ -3,8 +3,6 @@ import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
@@ -27,22 +25,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
     super.dispose();
   }
 
-  Future getData() async {
-    final docRef = users.doc(FirebaseAuth.instance.currentUser?.uid);
-    docRef.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        setState(() {
-          avatar = data['avatar'];
-        });
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
         body: Center(
             child: Container(
@@ -104,33 +88,16 @@ class _CreateUserPageState extends State<CreateUserPage> {
                 fontSize: 12.sp),
           ),
           Gap(3.h),
-          ButtonFunction(
+          /* ButtonFunction(
             text: "Crear Cuenta",
             color: Colors.white,
             backgroundColor: Colors.black,
             action: () => updateUser(),
             width: 80.w,
             fontStyle: FontStyle.normal,
-          ),
+          ),*/
         ]),
       ]),
     );
-  }
-
-  Future updateUser() async {
-    final docUser = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid);
-
-    final json = {
-      'user': userController.text.trim(),
-    };
-
-    await docUser
-        .set(json, SetOptions(merge: true))
-        .then((value) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            ));
   }
 }

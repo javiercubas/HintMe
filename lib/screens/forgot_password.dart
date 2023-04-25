@@ -2,7 +2,6 @@ import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:HintMe/Utils.dart';
@@ -98,14 +97,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: emailController.text.trim());
-
-      Utils.showSnackBar('Email enviado con éxito.');
-    } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(e.message);
-    }
+    // Aqui va mi codigo
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

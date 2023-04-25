@@ -1,4 +1,5 @@
 import 'package:HintMe/components/header.dart';
+import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import '../components/button_action.dart';
 import '../components/title.dart';
 
 class TemaDiarioPage extends StatelessWidget {
-  const TemaDiarioPage({super.key});
+  const TemaDiarioPage({super.key, required this.usuario});
+  final Usuario usuario;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,7 @@ class TemaDiarioPage extends StatelessWidget {
                     BounceInLeft(
                         duration: const Duration(seconds: 1),
                         child: ButtonAction(
-                          action: const HomePage(),
+                          action: HomePage(usuario: usuario),
                           backgroundColor:
                               const Color.fromARGB(255, 103, 58, 183),
                           color: Colors.white,
@@ -87,7 +89,7 @@ class TemaDiarioPage extends StatelessWidget {
                     BounceInRight(
                         duration: const Duration(seconds: 1),
                         child: ButtonAction(
-                          action: const HomePage(),
+                          action: HomePage(usuario: usuario),
                           backgroundColor:
                               const Color.fromARGB(255, 103, 58, 183),
                           color: Colors.white,
@@ -101,7 +103,7 @@ class TemaDiarioPage extends StatelessWidget {
                 duration: const Duration(seconds: 1),
                 child: TextButton(
                     onPressed: () {
-                      Get.to(() => const HomePage());
+                      Get.to(() => HomePage(usuario: usuario));
                     },
                     child: Text(
                       "Omitir",

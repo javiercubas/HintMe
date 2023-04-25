@@ -5,9 +5,6 @@ import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/SignUp/avatar/camera_page.dart';
 import 'package:HintMe/screens/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,28 +24,6 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
   double screenWidth = 0;
   Color primary = const Color(0xffeef444c);
   String profilePicLink = "";
-
-  void pickUploadProfilePic() async {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxHeight: 512,
-      maxWidth: 512,
-      imageQuality: 90,
-    );
-
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child("users/${FirebaseAuth.instance.currentUser?.uid}.jpg");
-
-    await ref.putFile(File(image!.path));
-
-    ref.getDownloadURL().then((value) async {
-      setState(() {
-        profilePicLink = value;
-        height = !height;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context, {XFile? path}) {
@@ -108,14 +83,14 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
             ]),
           ),
           GestureDetector(
-            onTap: () => pickUploadProfilePic(),
+            onTap: () {},
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               IconButton(
                   iconSize: 10.h,
                   icon: const Icon(Icons.photo),
                   color: Colors.white,
-                  onPressed: () => pickUploadProfilePic()),
+                  onPressed: () {}),
               Text(
                 'Galeria',
                 style: TextStyle(
@@ -182,34 +157,17 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
                 fontSize: 12.sp),
           ),
         ]),
-        Center(
+        /*Center(
           child: ButtonFunction(
             text: "Siguiente",
             color: Colors.white,
             backgroundColor: Colors.black,
-            action: () => updateUser(),
+            action: () {},
             width: 80.w,
             fontStyle: FontStyle.normal,
           ),
-        ),
+        ),*/
       ]),
     );
-  }
-
-  Future updateUser() async {
-    final docUser = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid);
-
-    final json = {
-      'avatar': profilePicLink,
-    };
-
-    await docUser
-        .set(json, SetOptions(merge: true))
-        .then((value) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            ));
   }
 }

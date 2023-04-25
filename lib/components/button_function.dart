@@ -1,5 +1,4 @@
 import 'package:HintMe/screens/Login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -62,13 +61,5 @@ class ButtonFunction extends StatelessWidget {
                   color: color,
                   fontStyle: fontStyle),
             )));
-  }
-
-  Future signOut(context) async {
-    await FirebaseAuth.instance.signOut().then((value) =>
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const LoginPage())));
   }
 }

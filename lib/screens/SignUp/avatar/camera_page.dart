@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -67,18 +65,6 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  void pickUploadProfilePic(url) async {
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child("users/${FirebaseAuth.instance.currentUser?.uid}.jpg");
-
-    await ref.putFile(File(url));
-
-    ref.getDownloadURL().then((value) async {
-      Navigator.pop(context, value);
-    });
-  }
-
   Widget buildScaffold(BuildContext context, Widget body) {
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -95,9 +81,7 @@ class _CameraPageState extends State<CameraPage> {
           try {
             _cameraController.takePicture().then((XFile? file) {
               if (mounted) {
-                if (file != null) {
-                  pickUploadProfilePic(file.path);
-                }
+                if (file != null) {}
               }
             });
             // Navigator.pop(context, path);

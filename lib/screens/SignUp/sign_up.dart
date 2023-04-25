@@ -4,36 +4,15 @@ import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
-import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/main.dart';
+import 'package:HintMe/model/bbdd.dart';
 import 'package:HintMe/screens/SignUp/phone_verifying_disable.dart';
 import 'package:HintMe/screens/SignUp/avatar/upload_avatar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:validators/validators.dart';
-
-Future<UserCredential> signInWithGoogle() async {
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
-
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
-
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -134,25 +113,6 @@ class _SignUpPageState extends State<SignUpPage> {
           Gap(4.h),
           const Separator(),
           Gap(4.h),
-          SizedBox(
-            width: 80.w,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  SocialButton(
-                      image:
-                          "https://assets.stickpng.com/images/5847f9cbcef1014c0b5e48c8.png",
-                      action: 'signInWithGoogle()'),
-                  SocialButton(
-                      image:
-                          "https://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png",
-                      action: 'signInWithGoogle()'),
-                  SocialButton(
-                      image:
-                          "https://cdn-icons-png.flaticon.com/512/20/20673.png",
-                      action: 'signInWithGoogle()'),
-                ]),
-          )
         ]),
       ),
     );
@@ -177,33 +137,6 @@ class _SignUpPageState extends State<SignUpPage> {
             child: const Center(
               child: CircularProgressIndicator(color: Colors.white),
             )));
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim())
-          .then((firebaseUser) => createUser(firebaseUser.user?.uid));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        Utils.showSnackBar(
-            'Error. La contraseña introducida es demasiado debil.');
-      } else if (e.code == 'email-already-in-use') {
-        Utils.showSnackBar(
-            'Error. El correo electrónico introducido ya está asignado a una cuenta.');
-      }
-    }
-
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
-  }
-
-  Future createUser(uid) async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc(uid);
-
-    final json = {
-      'name': nameController.text.trim(),
-      'email': emailController.text.trim(),
-    };
-
-    await docUser.set(json);
+    //await Conexion.registrarUsuario(usuario)
   }
 }

@@ -1,4 +1,5 @@
 import 'package:HintMe/components/title.dart';
+import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/tema_diario.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,8 @@ import 'package:sizer/sizer.dart';
 import '../components/button_action.dart';
 
 class ProximoTemaPage extends StatelessWidget {
-  const ProximoTemaPage({super.key});
+  const ProximoTemaPage({super.key, required this.usuario});
+  final Usuario usuario;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,7 @@ class ProximoTemaPage extends StatelessWidget {
                     child: fotoTema(imagen, pregunta))),
             Gap(7.h),
             ButtonAction(
-              action: const TemaDiarioPage(),
+              action: TemaDiarioPage(usuario: usuario),
               backgroundColor: const Color.fromARGB(255, 103, 58, 183),
               color: Colors.white,
               text: 'Seleccionar',

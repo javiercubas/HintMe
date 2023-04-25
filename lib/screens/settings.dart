@@ -1,65 +1,46 @@
+import 'dart:io';
+
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/icon_button.dart';
+import 'package:HintMe/model/bbdd.dart';
+import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:animate_do/animate_do.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final Usuario usuario;
+  const SettingsPage({super.key, required this.usuario});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String avatar = "";
-  String name = "";
-  String user = "";
-  String bio = "";
-  String link = "";
-  String location = "";
+  late Usuario _usuario;
   final nameController = TextEditingController();
   final userController = TextEditingController();
   final bioController = TextEditingController();
-  final linkController = TextEditingController();
-  final locationController = TextEditingController();
-
-  Future getData() async {
-    final docRef = users.doc(FirebaseAuth.instance.currentUser?.uid);
-    docRef.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        setState(() {
-          avatar = data['avatar'];
-          name = data['name'];
-          user = data['user'];
-          bio = data['bio'];
-          link = data['link'];
-          location = data['location'];
-        });
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-  }
 
   @override
   void dispose() {
     nameController.dispose();
     userController.dispose();
     bioController.dispose();
-    linkController.dispose();
-    locationController.dispose();
 
     super.dispose();
   }
 
+  void initState() {
+    super.initState();
+    _usuario = widget.usuario;
+  }
+
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
       appBar: appBar(),
       body: Center(
@@ -70,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
         accountSettings(),
       ]))))),
       backgroundColor: const Color.fromARGB(255, 39, 36, 36),
-      bottomNavigationBar: FadeInUp(child: bottomMenu()),
+      bottomNavigationBar: FadeInUp(child: bottomMenu(usuario: _usuario)),
     );
   }
 
@@ -92,11 +73,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Avatar(
-                        action: const HomePage(),
-                        border: true,
-                        image: avatar != "" ? avatar : "",
-                        size: 9.h),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Avatar(
+                          border: true,
+                          image: _usuario.avatar! != "" ? _usuario.avatar! : "",
+                          size: 9.h),
+                    ),
                     Text(
                       "Edit picture",
                       style: TextStyle(color: Colors.white, fontSize: 12.sp),
@@ -105,18 +88,20 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               inputField(
-                  text: "Nombre", variable: name, controller: nameController),
+                  text: "Nombre",
+                  variable: _usuario!.nombre,
+                  controller: nameController),
               inputField(
-                  text: "Usuario", variable: user, controller: userController),
-              inputField(text: "Bio", variable: bio, controller: bioController),
+                  text: "Usuario",
+                  variable: _usuario!.user,
+                  controller: userController),
               inputField(
-                  text: "Url", variable: link, controller: linkController),
-              inputField(
-                  text: "Localización",
-                  variable: location,
-                  controller: locationController),
+                  text: "Bio",
+                  variable: _usuario!.biografia,
+                  controller: bioController),
               ButtonFunction(
-                  action: () => updateUser(),
+                  action: () => Conexion.actualizarUsuario(_usuario!)
+                      .then((value) => Navigator.pop(context)),
                   backgroundColor: Colors.white,
                   color: Colors.black,
                   text: "Guardar Cambios",
@@ -188,53 +173,30 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Container bottomMenu() {
+  Container bottomMenu({required Usuario usuario}) {
     return Container(
       height: 10.h,
       decoration: const BoxDecoration(color: Color.fromARGB(255, 49, 45, 45)),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.home_outlined,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0)),
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.person_add_alt,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0)),
-            IconButtonES(
-                action: HomePage(),
-                icon: Icons.message_outlined,
-                borderRadius: 0,
-                color: Colors.white,
-                backgroundColor: Color.fromARGB(0, 0, 0, 0))
-          ]),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        IconButtonES(
+            action: HomePage(usuario: usuario),
+            icon: Icons.home_outlined,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0)),
+        IconButtonES(
+            action: HomePage(usuario: usuario),
+            icon: Icons.person_add_alt,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0)),
+        IconButtonES(
+            action: HomePage(usuario: usuario),
+            icon: Icons.message_outlined,
+            borderRadius: 0,
+            color: Colors.white,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0))
+      ]),
     );
-  }
-
-  Future updateUser() async {
-    final docUser = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid);
-
-    final json = {
-      'name': nameController.text.trim(),
-      'user': userController.text.trim(),
-      'bio': bioController.text.trim(),
-      'link': linkController.text.trim(),
-      'location': locationController.text.trim(),
-    };
-
-    await docUser
-        .set(json, SetOptions(merge: true))
-        .then((value) => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            ));
   }
 }
