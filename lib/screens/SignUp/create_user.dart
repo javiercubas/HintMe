@@ -1,8 +1,6 @@
 import 'package:HintMe/components/avatar.dart';
-import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';

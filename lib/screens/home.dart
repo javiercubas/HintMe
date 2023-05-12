@@ -3,8 +3,12 @@ import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
 import 'package:HintMe/model/circulos.dart';
+import 'package:HintMe/model/indirecta.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/Login/login.dart';
+import 'package:HintMe/screens/Solicitudes.dart';
+import 'package:HintMe/screens/circulo_page.dart';
+import 'package:HintMe/screens/conversacion.dart';
 import 'package:HintMe/screens/descubrir_gente.dart';
 import 'package:HintMe/screens/perfil.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
@@ -16,28 +20,39 @@ import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:HintMe/components/button_function.dart';
-import 'package:HintMe/model/bbdd.dart';
 
 class HomePage extends StatefulWidget {
   final Usuario usuario;
   const HomePage({super.key, required this.usuario});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(usuario);
 }
 
 class _HomePageState extends State<HomePage> {
-  late Usuario _usuario;
+  _HomePageState(this._usuario);
+  final Usuario _usuario;
+  bool lock = false;
+  List<Circulo> _circulos = [];
+  List<IndirectaModel> indirectasList = [];
 
   void initState() {
     super.initState();
-    _usuario = widget.usuario;
+    _initState();
+  }
+
+  void _initState() async {
+    int indirectas =
+        await IndirectaModel.getNumeroIndirectasPublicadasPorUsuarioHoy(
+            _usuario.id);
+    lock = indirectas == 0;
+    _circulos = await Circulo.getCirculosUsuario(_usuario.id, 10);
+
+    indirectasList = await IndirectaModel.getIndirectasSeguidos(_usuario.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool lock = true;
-
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -53,16 +68,30 @@ class _HomePageState extends State<HomePage> {
           toolbarHeight: 10.h,
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 39, 36, 36),
-          leading: Row(
-            children: [
-              Gap(0.5.w),
-              Icon(
-                Icons.people,
-                color: const Color.fromARGB(255, 103, 58, 183),
-                size: 4.h,
-              ),
-            ],
-          ),
+          leading: _usuario.privado
+              ? Row(
+                  children: [
+                    Gap(0.5.w),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SolicitudesPage(
+                                      usuario: _usuario,
+                                      solicitudes: true,
+                                      nombre: "Solicitudes",
+                                    )));
+                      },
+                      child: Icon(
+                        Icons.people,
+                        color: const Color.fromARGB(255, 103, 58, 183),
+                        size: 4.h,
+                      ),
+                    ),
+                  ],
+                )
+              : null,
           actions: [
             Builder(builder: (context) {
               return Container(
@@ -74,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(_usuario?.avatar ?? "")),
+                            image: NetworkImage(_usuario.avatar ?? "")),
                         color: const Color.fromRGBO(103, 58, 183, 1),
                         boxShadow: const [
                           BoxShadow(
@@ -114,19 +143,20 @@ class _HomePageState extends State<HomePage> {
       decoration: const BoxDecoration(color: Color.fromARGB(255, 49, 45, 45)),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         IconButtonES(
-            action: DescubrirGente(usuario: _usuario),
+            action: DescubrirGente(usuario: _usuario, usuario_actual: _usuario),
             icon: Icons.home_outlined,
             borderRadius: 0,
             color: Colors.white,
             backgroundColor: Color.fromARGB(0, 0, 0, 0)),
         IconButtonES(
-            action: DescubrirGente(usuario: _usuario),
+            action: DescubrirGente(usuario: _usuario, usuario_actual: _usuario),
             icon: Icons.person_add_alt,
             borderRadius: 0,
             color: Colors.white,
             backgroundColor: Color.fromARGB(0, 0, 0, 0)),
         IconButtonES(
-            action: DescubrirGente(usuario: _usuario),
+            action:
+                ConversacionPage(usuario_actual: _usuario, usuario: _usuario),
             icon: Icons.message_outlined,
             borderRadius: 0,
             color: Colors.white,
@@ -150,80 +180,80 @@ class _HomePageState extends State<HomePage> {
         lock ? Gap(4.h) : Gap(0.h),
         ZoomIn(child: temaDiario(lock)),
         lock ? Gap(3.h) : Gap(0.h),
-        FadeInLeft(child: circulos(usuario: usuario)),
+        FadeInLeft(child: circulos()),
         Gap(4.h),
         FadeInRight(
           child: IndirectasContainer(
             lock: lock,
+            indirectas: indirectasList,
+            usuario_actual: usuario,
           ),
         ),
       ],
     );
   }
 
-  SizedBox circulos({required Usuario usuario}) {
+  SizedBox circulos() {
     return SizedBox(
         width: 91.w,
         child: Column(
           children: [
             headerCirculos(),
             Gap(2.h),
-            SizedBox(
-                width: 100.w,
-                height: 11.h,
-                child: contentCirculos(usuario: usuario))
+            SizedBox(width: 100.w, height: 11.5.h, child: contentCirculos())
           ],
         ));
   }
 
-  FutureBuilder<List<Circulo?>> contentCirculos({required Usuario usuario}) {
-    return FutureBuilder<List<Circulo?>>(
-      future: Conexion.consultarCirculos(usuario.id),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final circulos = snapshot.data!;
-          return ListView(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            children: circulos
-                .map((circulo_) => Column(
-                      children: [
-                        circulo(
-                          text: circulo_!.nombre,
-                          image: circulo_.foto,
-                        ),
-                        Gap(3.w),
-                      ],
-                    ))
-                .toList(),
-          );
-        } else if (snapshot.hasError) {
-          return Text('Error al cargar los círculos');
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
+  ListView contentCirculos() {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      children: _circulos
+          .map((circulo_) => Column(
+                children: [
+                  circulo(
+                    id: circulo_.id,
+                    text: circulo_.nombre,
+                    image: circulo_.foto,
+                  ),
+                  Gap(3.w),
+                ],
+              ))
+          .toList(),
     );
   }
 
-  Column circulo({required String image, required String text}) {
-    return Column(
-      children: [
-        Container(
-          height: 7.h,
-          width: 7.h,
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 49, 45, 45),
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-              image: DecorationImage(
-                  image: NetworkImage(image), fit: BoxFit.cover)),
-        ),
-        Gap(1.h),
-        Text(
-          text,
-          style: TextStyle(color: Colors.white, fontSize: 10.sp),
-        )
-      ],
+  GestureDetector circulo(
+      {required String image, required String text, required int id}) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CirculoPage(
+                      usuario: _usuario,
+                      id: id,
+                    )));
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 7.h,
+            width: 7.h,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 49, 45, 45),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                image: DecorationImage(
+                    image: NetworkImage(image), fit: BoxFit.cover)),
+          ),
+          Gap(1.h),
+          Text(
+            text,
+            style: TextStyle(color: Colors.white, fontSize: 10.sp),
+          )
+        ],
+      ),
     );
   }
 
@@ -334,9 +364,7 @@ class NavigationDrawer extends StatelessWidget {
                         color: Colors.white),
                   ),
                   Text(
-                    usuario!.user != ""
-                        ? "@${usuario!.user}".toUpperCase()
-                        : "",
+                    usuario.user != "" ? "@${usuario.user}".toUpperCase() : "",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),

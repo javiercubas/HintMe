@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:HintMe/model/circulos.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mysql1/mysql1.dart';
@@ -8,14 +7,12 @@ class Conexion {
   static MySqlConnection? conexion;
 
   static Future<MySqlConnection> conectar() async {
-    //final env = DotEnv().env;
-
     final settings = ConnectionSettings(
-      host: "192.168.1.99", //env['DB_HOST'],
-      port: 3306, //int.parse(env['DB_PORT']),
-      user: "root", //env['DB_USER'],
-      //env['DB_PASSWORD'],
-      db: "bd_hintme", //env['DB_DATABASE'],
+      host: dotenv.env['DB_HOST']!,
+      port: int.parse(dotenv.env['DB_PORT']!),
+      user: dotenv.env['DB_USER'],
+      password: dotenv.env['DB_PASSWORD'],
+      db: dotenv.env['DB_NAME'],
     );
 
     conexion = await MySqlConnection.connect(settings);
@@ -44,12 +41,14 @@ class Conexion {
         user: row['user'],
         correo: row['correo'],
         fechaRegistro: row['fecha_registro'] as DateTime,
+        en_linea: row['en_linea'] == 1,
         ultimaConexion: row['ultima_conexion'] as DateTime?,
         nombre: row['nombre'],
         avatar: row['avatar'],
         fechaNacimiento: row['fecha_nacimiento'] as DateTime?,
         biografia: row['biografia'],
         anonimo: row['anonimo'] == 1,
+        privado: row['privado'] == 1,
         fechaDesactivacion: row['fecha_desactivacion'] as DateTime?,
         idRol: row['id_rol'],
       );
@@ -124,12 +123,14 @@ class Conexion {
               user: row['user'],
               correo: row['correo'],
               fechaRegistro: row['fecha_registro'] as DateTime,
+              en_linea: row['en_linea'] == 1,
               ultimaConexion: row['ultima_conexion'] as DateTime?,
               nombre: row['nombre'],
               avatar: row['avatar'],
               fechaNacimiento: row['fecha_nacimiento'] as DateTime?,
               biografia: row['biografia'],
               anonimo: row['anonimo'] == 1,
+              privado: row['privado'] == 1,
               fechaDesactivacion: row['fecha_desactivacion'] as DateTime?,
               idRol: row['id_rol'],
             ))
@@ -154,42 +155,19 @@ class Conexion {
         user: row['user'],
         correo: row['correo'],
         fechaRegistro: row['fecha_registro'] as DateTime,
+        en_linea: row['en_linea'] == 1,
         ultimaConexion: row['ultima_conexion'] as DateTime?,
         nombre: row['nombre'],
         avatar: row['avatar'],
         fechaNacimiento: row['fecha_nacimiento'] as DateTime?,
         biografia: row['biografia'],
         anonimo: row['anonimo'] == 1,
+        privado: row['privado'] == 1,
         fechaDesactivacion: row['fecha_desactivacion'] as DateTime?,
         idRol: row['id_rol'],
       );
     } else {
       return null;
     }
-  }
-
-  static Future<List<Circulo>> consultarCirculos(int id_usuario) async {
-    final conexion = await Conexion.conectar();
-
-    final resultados = await conexion.query(
-      'SELECT circulos.* FROM circulos JOIN usuario_circulos ON circulos.id = usuario_circulos.id_circulo WHERE id_usuario = ?',
-      [id_usuario],
-    );
-
-    await Conexion.desconectar();
-
-    return resultados
-        .map((row) => Circulo(
-              id: row['id'],
-              anonimato: row['anonimato'] == 1,
-              fechaCreacion: row['fecha_creacion'] as DateTime,
-              fechaEliminacion: row['fecha_eliminacion'] as DateTime?,
-              foto: row['foto'],
-              idCreador: row['id_creador'],
-              nombre: row['nombre'],
-              privacidad: row['privacidad'] == 1,
-              temasPropios: row['temas_propios'] == 1,
-            ))
-        .toList();
   }
 }

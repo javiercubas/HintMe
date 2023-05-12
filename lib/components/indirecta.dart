@@ -8,13 +8,13 @@ import 'package:sizer/sizer.dart';
 class indirecta extends StatelessWidget {
   const indirecta({
     super.key,
-    this.usuario,
+    required this.usuario,
     required this.mensaje,
     required this.fecha,
     required this.usuario_actual,
   });
   final Usuario usuario_actual;
-  final Usuario? usuario;
+  final Usuario usuario;
   final String mensaje;
   final String fecha;
 
@@ -40,7 +40,7 @@ class indirecta extends StatelessWidget {
                         usuario_actual: usuario_actual,
                       ),
                       border: true,
-                      image: usuario!.avatar!,
+                      image: usuario.avatar!,
                       size: 5.h),
                   Gap(3.w),
                   Container(
@@ -60,7 +60,7 @@ class indirecta extends StatelessWidget {
                             );
                           },
                           child: Text(
-                            usuario!.user,
+                            usuario.user,
                             style: TextStyle(
                                 fontSize: 15.sp,
                                 color: Colors.white,
@@ -80,7 +80,7 @@ class indirecta extends StatelessWidget {
                             );
                           },
                           child: Text(
-                            usuario!.nombre,
+                            usuario.nombre,
                             style:
                                 TextStyle(fontSize: 12.sp, color: Colors.white),
                           ),

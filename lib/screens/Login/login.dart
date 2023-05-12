@@ -1,8 +1,6 @@
-import 'package:HintMe/Utils.dart';
 import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
-import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/model/bbdd.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/forgot_password.dart';
@@ -13,8 +11,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
-import 'package:validators/validators.dart';
-import 'package:HintMe/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

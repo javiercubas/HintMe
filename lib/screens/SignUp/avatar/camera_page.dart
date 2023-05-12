@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -52,7 +50,7 @@ class _CameraPageState extends State<CameraPage> {
                   });
                 },
                 child: AspectRatio(
-                    aspectRatio: 1 / _cameraController!.value.aspectRatio,
+                    aspectRatio: 1 / _cameraController.value.aspectRatio,
                     child: CameraPreview(_cameraController)),
               ),
             ));

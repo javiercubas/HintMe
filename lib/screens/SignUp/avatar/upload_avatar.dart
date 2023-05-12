@@ -1,10 +1,5 @@
-import 'dart:io';
-
-import 'package:HintMe/components/button_action.dart';
-import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/SignUp/avatar/camera_page.dart';
-import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';

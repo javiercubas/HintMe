@@ -1,10 +1,21 @@
+import 'package:HintMe/components/indirecta.dart';
+import 'package:HintMe/model/bbdd.dart';
+import 'package:HintMe/model/indirecta.dart';
+import 'package:HintMe/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
 
 class IndirectasContainer extends StatelessWidget {
-  const IndirectasContainer({super.key, required this.lock});
+  const IndirectasContainer(
+      {super.key,
+      required this.lock,
+      required this.indirectas,
+      required this.usuario_actual});
   final bool lock;
+  final List<IndirectaModel> indirectas;
+  final Usuario usuario_actual;
+
   @override
   Widget build(BuildContext context) {
     return indirectasDiv(lock: lock);
@@ -50,44 +61,33 @@ class IndirectasContainer extends StatelessWidget {
     return Container(
       height: 30.h,
       width: 100.w,
-      child: ListView.builder(
-        itemCount: 3,
-        scrollDirection: Axis.horizontal,
-        prototypeItem: Row(children: [
-          Container(
-              width: 50.w,
-              height: 100.h,
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color.fromARGB(255, 75, 13, 81),
-                        Color.fromARGB(255, 31, 3, 98)
-                      ]),
-                  borderRadius: BorderRadius.all(Radius.circular(12)))),
-          Gap(3.w),
-        ]),
-        itemBuilder: (context, index) {
-          return Row(children: [
-            Container(
-                width: 50.w,
-                height: 100.h,
-                transform: Matrix4.rotationZ(-0.3),
-                alignment: Alignment.bottomRight,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color.fromARGB(255, 75, 13, 81),
-                          Color.fromARGB(255, 31, 3, 98)
-                        ]),
-                    borderRadius: BorderRadius.all(Radius.circular(12)))),
-            Gap(3.w),
-          ]);
-        },
-      ),
+      child: indirectas.length > 0
+          ? ListView.builder(
+              itemCount: indirectas.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                Usuario? usuario = null;
+                void initState() async {
+                  usuario = await Conexion.consultarUsuario(
+                      indirectas[index].idUsuario);
+                }
+
+                initState();
+
+                return indirecta(
+                  fecha: indirectas[index].fechaPublicacion.toIso8601String(),
+                  mensaje: indirectas[index].mensaje,
+                  usuario: usuario!,
+                  usuario_actual: usuario_actual,
+                );
+              },
+            )
+          : Center(
+              child: Text(
+                "No hay indirectas",
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
     );
   }
 }

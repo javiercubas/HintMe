@@ -6,12 +6,14 @@ class Usuario {
   String correo;
   String? contrasena;
   DateTime fechaRegistro;
+  bool en_linea;
   DateTime? ultimaConexion;
   String nombre;
   String? avatar;
   DateTime? fechaNacimiento;
   String biografia;
   bool anonimo;
+  bool privado;
   DateTime? fechaDesactivacion;
   int idRol;
 
@@ -21,12 +23,14 @@ class Usuario {
     required this.correo,
     this.contrasena,
     required this.fechaRegistro,
+    required this.en_linea,
     this.ultimaConexion,
     required this.nombre,
     this.avatar,
     required this.fechaNacimiento,
     required this.biografia,
     required this.anonimo,
+    required this.privado,
     required this.fechaDesactivacion,
     required this.idRol,
   });
@@ -36,6 +40,7 @@ class Usuario {
         user: json["user"],
         correo: json["correo"],
         fechaRegistro: DateTime.parse(json["fecha_registro"]),
+        en_linea: json["en_linea"] == 1 ? true : false,
         ultimaConexion: json["ultima_conexion"] != null
             ? DateTime.parse(json["ultima_conexion"])
             : null,
@@ -46,6 +51,7 @@ class Usuario {
             : null,
         biografia: json["biografia"],
         anonimo: json["anonimo"] == 1 ? true : false,
+        privado: json["privado"] == 1 ? true : false,
         fechaDesactivacion: json["fecha_desactivacion"] != null
             ? DateTime.parse(json["fecha_desactivacion"])
             : null,
@@ -57,6 +63,7 @@ class Usuario {
         "user": user,
         "correo": correo,
         "fecha_registro": fechaRegistro.toIso8601String(),
+        "en_linea": en_linea == true ? 1 : 0,
         "ultima_conexion":
             ultimaConexion != null ? ultimaConexion?.toIso8601String() : null,
         "nombre": nombre,
@@ -65,9 +72,36 @@ class Usuario {
             fechaNacimiento != null ? fechaNacimiento?.toIso8601String() : null,
         "biografia": biografia,
         "anonimo": anonimo == true ? 1 : 0,
+        "privado": privado == true ? 1 : 0,
         "fecha_desactivacion": fechaDesactivacion != null
             ? fechaDesactivacion?.toIso8601String()
             : null,
         "id_rol": idRol,
       };
+
+  // funcion estatica para actualizar el estado de en linea de un usuario
+  static Future<void> actualizarEnLinea(int idUsuario, bool enLinea) async {
+    final conexion = await Conexion.conectar();
+
+    await conexion.query(
+      'UPDATE usuarios SET en_linea = ? WHERE id = ?',
+      [enLinea, idUsuario],
+    );
+
+    await Conexion.desconectar();
+  }
+
+  // funcion estatica para consultar el estado de en linea de un usuario
+  static Future<bool> consultarEnLinea(int idUsuario) async {
+    final conexion = await Conexion.conectar();
+
+    final resultado = await conexion.query(
+      'SELECT en_linea FROM usuarios WHERE id = ?',
+      [idUsuario],
+    );
+
+    await Conexion.desconectar();
+
+    return resultado.first[0] == 1 ? true : false;
+  }
 }

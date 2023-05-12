@@ -1,3 +1,5 @@
+import 'package:HintMe/model/bbdd.dart';
+
 class Circulo {
   int id;
   String nombre;
@@ -26,9 +28,9 @@ class Circulo {
       id: json['id'],
       nombre: json['nombre'],
       foto: json['foto'],
-      temasPropios: json['temas_propios'].cast<int>(),
-      privacidad: json['privacidad'].cast<int>(),
-      anonimato: json['anonimato'].cast<int>(),
+      temasPropios: json['temas_propios'],
+      privacidad: json['privacidad'],
+      anonimato: json['anonimato'],
       fechaCreacion: DateTime.parse(json['fecha_creacion']),
       fechaEliminacion: DateTime.parse(json['fecha_eliminacion']),
       idCreador: json['id_creador'],
@@ -47,5 +49,35 @@ class Circulo {
       'fecha_eliminacion': fechaEliminacion?.toIso8601String(),
       'id_creador': idCreador,
     };
+  }
+
+  // función estática que devuelve una lista de círculos a los que pertenece un usuario concreto con un número máximo de círculos
+  static Future<List<Circulo>> getCirculosUsuario(
+      int idUsuario, int numeroMaximoCirculos) async {
+    final conexion = await Conexion.conectar();
+
+    final resultado = await conexion.query(
+      'SELECT * FROM circulos WHERE id_creador = ? AND fecha_eliminacion IS NULL LIMIT ?',
+      [idUsuario, numeroMaximoCirculos],
+    );
+
+    await conexion.close();
+    List<Circulo> circulos = [];
+    for (var circulo in resultado) {
+      final circulo_ = Circulo(
+          id: circulo["id"],
+          anonimato: circulo["anonimato"] == 1 ? true : false,
+          fechaCreacion: circulo["fecha_creacion"],
+          fechaEliminacion: circulo["fecha_eliminacion"] == null
+              ? null
+              : circulo["fecha_eliminacion"],
+          foto: circulo["foto"],
+          idCreador: circulo["id_creador"],
+          nombre: circulo["nombre"],
+          privacidad: circulo["privacidad"] == 1 ? true : false,
+          temasPropios: circulo["temas_propios"] == 1 ? true : false);
+      circulos.add(circulo_);
+    }
+    return circulos;
   }
 }

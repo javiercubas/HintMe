@@ -55,6 +55,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   mysql1: ^0.20.0
   timeago: ^3.4.0
+  socket_io_client: ^2.0.2
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

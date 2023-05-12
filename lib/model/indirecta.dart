@@ -93,4 +93,51 @@ class IndirectaModel {
     }
     return listaIndirectas;
   }
+
+  // función estatica que devuelve el número de indirectas publicadas por un usuario hoy
+  static Future<int> getNumeroIndirectasPublicadasPorUsuarioHoy(
+      int idUsuario) async {
+    final conexion = await Conexion.conectar();
+
+    final resultado = await conexion.query(
+      'SELECT COUNT(*) FROM indirectas WHERE id_usuario = ? AND fecha_publicacion >= DATE_SUB(NOW(), INTERVAL 1 DAY) AND fecha_eliminacion IS NULL',
+      [idUsuario],
+    );
+
+    await conexion.close();
+    int numeroIndirectas = 0;
+    if (resultado.isNotEmpty) {
+      final row = resultado.first;
+      numeroIndirectas = row[0];
+    }
+    return numeroIndirectas;
+  }
+
+  // Función estática que devuelve la lista de indirectas publicadas por los seguidos de un usuario ordenadas por fecha de publicación
+  static Future<List<IndirectaModel>> getIndirectasSeguidos(
+      int idUsuario) async {
+    final conexion = await Conexion.conectar();
+
+    final resultado = await conexion.query(
+      'SELECT id_usuario, mensaje, fecha_publicacion FROM indirectas WHERE id_usuario IN (SELECT id_seguido FROM seguidores WHERE id_seguidor = ? AND fecha_unfollow IS NULL AND (aceptada = 1 or fecha_solicitud IS NULL)) AND fecha_eliminacion IS NULL ORDER BY fecha_publicacion DESC',
+      [idUsuario],
+    );
+
+    await conexion.close();
+    List<IndirectaModel> listaIndirectas = [];
+    if (resultado.isNotEmpty) {
+      for (final row in resultado) {
+        listaIndirectas.add(IndirectaModel(
+          id: 0,
+          mensaje: row[1],
+          fechaPublicacion: row[2] as DateTime,
+          fechaEliminacion: null,
+          idUsuario: row[0],
+          idTema: 0,
+          idCirculo: 0,
+        ));
+      }
+    }
+    return listaIndirectas;
+  }
 }

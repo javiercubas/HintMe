@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/icon_button.dart';
@@ -7,7 +5,6 @@ import 'package:HintMe/model/bbdd.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -89,18 +86,18 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               inputField(
                   text: "Nombre",
-                  variable: _usuario!.nombre,
+                  variable: _usuario.nombre,
                   controller: nameController),
               inputField(
                   text: "Usuario",
-                  variable: _usuario!.user,
+                  variable: _usuario.user,
                   controller: userController),
               inputField(
                   text: "Bio",
-                  variable: _usuario!.biografia,
+                  variable: _usuario.biografia,
                   controller: bioController),
               ButtonFunction(
-                  action: () => Conexion.actualizarUsuario(_usuario!)
+                  action: () => Conexion.actualizarUsuario(_usuario)
                       .then((value) => Navigator.pop(context)),
                   backgroundColor: Colors.white,
                   color: Colors.black,

@@ -1,19 +1,19 @@
-import 'package:HintMe/components/avatar.dart';
-import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirecta.dart';
 import 'package:HintMe/components/title.dart';
+import 'package:HintMe/model/indirecta.dart';
 import 'package:HintMe/model/usuario.dart';
-import 'package:HintMe/screens/home.dart';
-import 'package:HintMe/screens/perfil.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
-import 'package:swipeable_card_stack/swipe_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:swipeable_card_stack/swipeable_card_stack.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DescubrirGente extends StatefulWidget {
-  const DescubrirGente({super.key, required this.usuario});
+  const DescubrirGente(
+      {super.key, required this.usuario, required this.usuario_actual});
   final Usuario usuario;
+  final Usuario usuario_actual;
 
   @override
   State<DescubrirGente> createState() => _DescubrirGenteState();
@@ -23,9 +23,14 @@ class _DescubrirGenteState extends State<DescubrirGente> {
   String avatar = "";
   bool isFull = true;
   final ScrollController _scrollController = ScrollController();
+  final _cardController = SwipeableCardSectionController();
+  int counter = 0;
+  List<IndirectaModel>? _indirectasList;
 
   void initState() {
     super.initState();
+
+    _initState();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels > 10.h) {
@@ -37,6 +42,15 @@ class _DescubrirGenteState extends State<DescubrirGente> {
           isFull = true;
         });
       }
+    });
+  }
+
+  void _initState() async {
+    await IndirectaModel.getIndirectasPublicadasPorUsuario(widget.usuario.id)
+        .then((value) {
+      setState(() {
+        _indirectasList = value;
+      });
     });
   }
 
@@ -61,9 +75,41 @@ class _DescubrirGenteState extends State<DescubrirGente> {
     );
   }
 
-  Container main() {
+  SwipeableCardsSection main() {
+    return SwipeableCardsSection(
+      cardController: _cardController,
+      context: context,
+      cardHeightTopMul: 90.h,
+      cardHeightBottomMul: 90.h,
+      cardHeightMiddleMul: 90.h,
+      cardWidthBottomMul: 90.w,
+      cardWidthMiddleMul: 90.w,
+      cardWidthTopMul: 90.w,
+      items: [
+        personas(),
+      ],
+
+      enableSwipeUp: false,
+      enableSwipeDown: false,
+      //Get card swipe event callbacks
+      onCardSwiped: (dir, index, widget) {
+        //Add the next card
+        if (counter <= 20) {
+          _cardController.addItem(personas());
+          counter++;
+        }
+
+        if (dir == Direction.left) {
+          print('onDisliked $index');
+        } else if (dir == Direction.right) {
+          print('onLiked $index');
+        }
+      },
+    );
+  }
+
+  Container personas() {
     return Container(
-      height: 75.h,
       decoration:
           BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(12))),
       child: SingleChildScrollView(
@@ -72,31 +118,26 @@ class _DescubrirGenteState extends State<DescubrirGente> {
         child: Column(
           children: [
             SizedBox(
-              height: 75.h,
+              height: 78.h,
               child: Stack(
                 children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          //borderRadius: BorderRadius.all(Radius.circular(12)),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://pps.whatsapp.net/v/t61.24694-24/291100678_286791683640238_1230206621727768820_n.jpg?ccb=11-4&oh=01_AdTDj8MIEI5swJV842kkwAQTPKpY8GOhrQJx0Xsal5y06A&oe=6450C6FE"),
-                              fit: BoxFit.cover)),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
+                  Container(
+                    decoration: BoxDecoration(
                         //borderRadius: BorderRadius.all(Radius.circular(12)),
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color.fromARGB(0, 0, 0, 0),
-                              Color.fromARGB(255, 0, 0, 0)
-                            ]),
-                      ),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.usuario.avatar!),
+                            fit: BoxFit.cover)),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      //borderRadius: BorderRadius.all(Radius.circular(12)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(0, 0, 0, 0),
+                            Color.fromARGB(255, 0, 0, 0)
+                          ]),
                     ),
                   ),
                   isFull
@@ -107,7 +148,7 @@ class _DescubrirGenteState extends State<DescubrirGente> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Sergio, 19",
+                                  "${widget.usuario.nombre.split(' ')[0]}, ${(DateTime.now().difference(widget.usuario.fechaNacimiento!).inDays / 365.25).floor()}",
                                   style: TextStyle(
                                       fontSize: 21.sp,
                                       fontWeight: FontWeight.bold,
@@ -131,19 +172,21 @@ class _DescubrirGenteState extends State<DescubrirGente> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Sergio, 19 - Villaverde",
+                      "${widget.usuario.nombre.split(' ')[0]}, ${(DateTime.now().difference(widget.usuario.fechaNacimiento!).inDays / 365.25).floor()} - Villaverde",
                       style: TextStyle(
                           fontSize: 21.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
                     Gap(1.h),
-                    textInfo(texto: "Miembro desde noviembre de 2022"),
+                    textInfo(
+                        texto:
+                            "Miembro desde ${DateFormat('MMMM y', 'es_ES').format(widget.usuario.fechaRegistro).replaceFirst(' ', ' de ')}"),
                     textInfo(texto: "2º de Ingeniería Informática"),
                     textInfo(texto: "Universidad Europea de Madrid"),
                     Gap(2.h),
                     Text(
-                      "Apasionado de la moda juvenil, experto en coches y cuñado del año 2022. Es broma niño yo te quiero.",
+                      widget.usuario.biografia,
                       style: TextStyle(fontSize: 15.sp, color: Colors.black),
                     ),
                     Gap(2.h),
@@ -155,41 +198,29 @@ class _DescubrirGenteState extends State<DescubrirGente> {
                           color: Colors.black),
                     ),
                     Gap(1.h),
-                    indirecta(
-                        usuario_actual: widget.usuario,
-                        usuario: widget.usuario,
-                        mensaje: "¿Te gusta el cine?",
-                        fecha: "Hace 2 horas"),
+                    for (var i = 0; i < _indirectasList!.length; i++)
+                      Column(
+                        children: [
+                          indirecta(
+                            usuario_actual: widget.usuario_actual,
+                            usuario: widget.usuario,
+                            fecha: timeago.format(
+                                DateTime.now().subtract(DateTime.now()
+                                    .toUtc()
+                                    .add(Duration(hours: 2))
+                                    .difference(
+                                        _indirectasList![i].fechaPublicacion)),
+                                locale: 'es'),
+                            mensaje: _indirectasList![i].mensaje,
+                          ),
+                          Gap(3.h),
+                        ],
+                      ),
                   ]),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Container bottomMenu() {
-    return Container(
-      height: 10.h,
-      decoration: const BoxDecoration(color: Color.fromARGB(255, 39, 36, 36)),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        IconButtonES(
-            action: DescubrirGente(
-              usuario: widget.usuario,
-            ),
-            icon: Icons.close_rounded,
-            borderRadius: 0,
-            color: Colors.white,
-            backgroundColor: Color.fromARGB(255, 39, 36, 36)),
-        IconButtonES(
-            action: DescubrirGente(
-              usuario: widget.usuario,
-            ),
-            icon: Icons.favorite,
-            borderRadius: 0,
-            color: Colors.white,
-            backgroundColor: Color.fromARGB(255, 39, 36, 36))
-      ]),
     );
   }
 
@@ -208,8 +239,17 @@ class _DescubrirGenteState extends State<DescubrirGente> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.close, color: Colors.white, size: 40.sp),
-          Icon(Icons.favorite, color: Colors.white, size: 40.sp),
+          IconButton(
+            onPressed: () {
+              _cardController.triggerSwipeLeft();
+            },
+            icon: Icon(Icons.close, color: Colors.white, size: 40.sp),
+          ),
+          IconButton(
+              onPressed: () {
+                _cardController.triggerSwipeRight();
+              },
+              icon: Icon(Icons.favorite, color: Colors.white, size: 40.sp)),
         ],
       ),
     );

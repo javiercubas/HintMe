@@ -1,6 +1,4 @@
-import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class IconButtonES extends StatelessWidget {

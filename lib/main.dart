@@ -1,22 +1,21 @@
 import 'package:HintMe/model/bbdd.dart';
 import 'package:HintMe/model/usuario.dart';
 import 'package:HintMe/screens/Login/login.dart';
-import 'package:HintMe/screens/SignUp/create_user.dart';
-import 'package:HintMe/screens/SignUp/avatar/upload_avatar.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:HintMe/Utils.dart' as Util;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
+  initializeDateFormatting('es_ES', null);
 
   final prefs = await SharedPreferences.getInstance();
   final showOnBoarding = prefs.getBool('showOnBoarding') ?? true;
@@ -31,10 +30,28 @@ void main() async {
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.showOnBoarding, this.usuario});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key, required this.showOnBoarding, this.usuario})
+      : super(key: key);
   final bool showOnBoarding;
   final Usuario? usuario;
+
+  @override
+  _MyAppState createState() => _MyAppState(showOnBoarding, usuario);
+}
+
+class _MyAppState extends State<MyApp> {
+  _MyAppState(this.showOnBoarding, this.usuario);
+  final bool showOnBoarding;
+  final Usuario? usuario;
+
+  @override
+  void initState() {
+    super.initState();
+    if (usuario != null) {
+      Usuario.actualizarEnLinea(usuario!.id, true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +70,12 @@ class MyApp extends StatelessWidget {
                     : const LoginPage(),
           ));
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Usuario.actualizarEnLinea(usuario!.id, false);
   }
 }
 

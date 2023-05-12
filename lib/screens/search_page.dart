@@ -1,7 +1,6 @@
 import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/model/bbdd.dart';
 import 'package:HintMe/model/usuario.dart';
-import 'package:HintMe/screens/home.dart';
 import 'package:HintMe/screens/perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
@@ -90,7 +89,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               subtitle: Text(
-                usuario.correo ?? "",
+                usuario.correo,
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.6),
                 ),
