@@ -1,13 +1,10 @@
 import 'package:HintMe/Utils.dart';
-import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/input_form.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/components/separator.dart';
 import 'package:HintMe/components/social_button.dart';
 import 'package:HintMe/main.dart';
-import 'package:HintMe/screens/SignUp/phone_verifying_disable.dart';
-import 'package:HintMe/screens/SignUp/avatar/upload_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';

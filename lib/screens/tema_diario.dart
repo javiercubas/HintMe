@@ -1,4 +1,3 @@
-import 'package:HintMe/components/header.dart';
 import 'package:HintMe/screens/home.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';

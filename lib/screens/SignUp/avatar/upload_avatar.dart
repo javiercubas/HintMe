@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:HintMe/components/button_action.dart';
 import 'package:HintMe/components/button_function.dart';
 import 'package:HintMe/components/logo.dart';
 import 'package:HintMe/screens/SignUp/avatar/camera_page.dart';

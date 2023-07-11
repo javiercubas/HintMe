@@ -2,6 +2,7 @@ import 'package:HintMe/components/avatar.dart';
 import 'package:HintMe/components/icon_button.dart';
 import 'package:HintMe/components/indirectas_container.dart';
 import 'package:HintMe/components/search.dart';
+import 'package:HintMe/screens/discover_menu.dart';
 import 'package:HintMe/screens/proximo_tema.dart';
 import 'package:HintMe/screens/search_page.dart';
 import 'package:HintMe/screens/settings.dart';
@@ -12,6 +13,7 @@ import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:HintMe/components/button_function.dart';
+import 'package:HintMe/components/button_discover.dart';
 
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -104,7 +106,7 @@ class _HomePageState extends State<HomePage> {
       decoration: const BoxDecoration(color: Color.fromARGB(255, 49, 45, 45)),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
+          children: [
             IconButtonES(
                 action: HomePage(),
                 icon: Icons.home_outlined,
@@ -112,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 backgroundColor: Color.fromARGB(0, 0, 0, 0)),
             IconButtonES(
-                action: HomePage(),
+                action: DiscoverMenu(),
                 icon: Icons.person_add_alt,
                 borderRadius: 0,
                 color: Colors.white,

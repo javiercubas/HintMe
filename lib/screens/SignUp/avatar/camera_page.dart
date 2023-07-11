@@ -54,7 +54,7 @@ class _CameraPageState extends State<CameraPage> {
                   });
                 },
                 child: AspectRatio(
-                    aspectRatio: 1 / _cameraController!.value.aspectRatio,
+                    aspectRatio: 1 / _cameraController.value.aspectRatio,
                     child: CameraPreview(_cameraController)),
               ),
             ));

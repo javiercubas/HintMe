@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gap/gap.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:validators/validators.dart';
 import 'package:HintMe/main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -189,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       Utils.showSnackBar(
           "El correo y/o la contraseña introducidos son incorrectos. Intenta introducirlos de nuevo.");
     }
