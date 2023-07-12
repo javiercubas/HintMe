@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class GrupoPage extends StatefulWidget {
   const GrupoPage({Key? key}) : super(key: key);
@@ -139,13 +140,7 @@ class _GrupoPageState extends State<GrupoPage> {
                         maxLength: maxNameLength,
                       ),
                       Gap(1.h),
-                      inputGrupo(
-                        name: 'Ubicación del grupo',
-                        controller: ubicacionController,
-                        lines: 1,
-                        type: 1,
-                        maxLength: maxUbicacionLength,
-                      ),
+                      inputGrupoUbicacion(),
                       Gap(1.h),
                       inputGrupo(
                         name: 'Descripción del grupo',
@@ -201,6 +196,66 @@ class _GrupoPageState extends State<GrupoPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Column inputGrupoUbicacion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Ubicación del grupo'.toUpperCase(),
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            color: Colors.white,
+          ),
+        ),
+        Gap(1.h),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: DropdownSearch<String>(
+            enabled: true,
+            items: [
+              'Ciudad 1',
+              'Ciudad 2',
+              'Ciudad 3',
+              // Agrega más nombres de ciudades aquí
+            ],
+            onChanged: (selectedItem) {
+              ubicacionController.text = selectedItem!;
+            },
+            selectedItem: ubicacionController.text,
+            dropdownBuilder: (context, selectedItem) {
+              return Text(
+                selectedItem!,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  color: Color.fromARGB(255, 39, 36, 36),
+                ),
+              );
+            },
+            dropdownButtonProps: DropdownButtonProps(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Color.fromARGB(255, 39, 36, 36),
+              ),
+            ),
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
